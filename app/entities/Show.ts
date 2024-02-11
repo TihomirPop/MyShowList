@@ -56,6 +56,11 @@ export class Show {
   userShows: UserShow[];
 
 
+  setId(id: number): Show {
+    this.id = id;
+    return this;
+  }
+
   setTitle(title: string): Show {
     this.title = title;
     return this;
