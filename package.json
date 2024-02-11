@@ -2,10 +2,10 @@
   "name": "my-show-list",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec \"node_modules/.bin/ts-node\" index.ts"
+    "dev": "nodemon --exec \\\"node_modules/.bin/ts-node\\\" server.ts"
   },
   "keywords": [],
   "author": "",
