@@ -33,15 +33,15 @@ const showRoute = (showRepo: Repository<Show>) => {
   });
 
   router.use((req: any, res, next) => {
-      if (!req.decoded.user.isAdmin) {
-        res.status(403).send({
-          message: 'Not an admin'
-        });
-        return;
-      }
+    if (!req.decoded.user.isAdmin) {
+      res.status(403).send({
+        message: 'Not an admin'
+      });
+      return;
+    }
 
-      next();
-    });
+    next();
+  });
 
   router.route('/shows').post(async (req, res) => {
     try {
@@ -52,10 +52,14 @@ const showRoute = (showRepo: Repository<Show>) => {
         .setEpisodes(req.body.episodes)
         .setStartDate(req.body.startDate)
         .setEndDate(req.body.endDate)
-        .setGenres(req.body.genres);
+        .setGenres(req.body.genres)
+        .setImageUrl(req.body.imageUrl);
 
       await showRepo.save(show);
-      res.status(201).json(show);
+      const showRes = await showRepo.findOne({where: {id: show.id}, relations: {genres: true}});
+      if (showRes)
+        showRes.type = ShowType[showRes.type] as any;
+      res.status(201).json(showRes);
     } catch (e) {
       res.status(400).json({message: 'Error creating show, ' + e.message});
     }
@@ -74,7 +78,8 @@ const showRoute = (showRepo: Repository<Show>) => {
         .setEpisodes(req.body.episodes)
         .setStartDate(req.body.startDate)
         .setEndDate(req.body.endDate)
-        .setGenres(req.body.genres);
+        .setGenres(req.body.genres)
+        .setImageUrl(req.body.imageUrl);
 
       await showRepo.save(show);
       res.status(200).json(show);

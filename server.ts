@@ -13,6 +13,7 @@ import {authRoute} from "./app/routes/authRoute";
 import {meRoute} from "./app/routes/meRoute";
 import {genreRoute} from "./app/routes/genreRoute";
 import jsonwebtoken from "jsonwebtoken";
+import path from "path";
 
 const app = express();
 const dataSource = new DataSource({
@@ -38,20 +39,7 @@ const main = async () => {
 
     app.use(express.urlencoded({extended: true}));
     app.use(express.json());
-    app.use(express.static(__dirname + '/public'));
-
-    //todo: remove this
-    app.use(function (_req, res, next) {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization');
-
-      if (_req.method === 'OPTIONS') {
-        res.sendStatus(200);
-      } else {
-        next();
-      }
-    });
+    app.use(express.static(__dirname + '/public/app'));
 
     const router = express.Router();
 
@@ -62,12 +50,10 @@ const main = async () => {
     router.use(genreRoute(dataSource.getRepository(Genre)));
     router.use(showRoute(dataSource.getRepository(Show)));
 
-
     app.use('/api', router);
 
     app.get('*', function (req, res) {
-      console.log('Request received');
-      res.status(404).json({message: 'Not found'});
+      res.sendFile(path.join(__dirname + '/public/app/index.html'));
     });
 
     app.listen(config.port);

@@ -35,7 +35,10 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
 
 
       await userShowRepo.save(userShow);
-      res.status(201).json(userShow);
+      const userShowRes = await userShowRepo.findOne({where: {id: userShow.id}, relations: {show: true}});
+      if (userShowRes)
+        userShowRes.show.type = ShowType[userShowRes.show.type] as any;
+      res.status(201).json(userShowRes);
     } catch (e) {
       res.status(400).json({message: 'Error adding show to your list, ' + e.message});
     }
@@ -59,7 +62,10 @@ export const myShowRoute = (userShowRepo: Repository<UserShow>) => {
         .setStatus(req.body.status);
 
       await userShowRepo.save(userShow);
-      res.status(200).json(userShow);
+      const userShowRes = await userShowRepo.findOne({where: {id: userShow.id}, relations: {show: true}});
+      if (userShowRes)
+        userShowRes.show.type = ShowType[userShowRes.show.type] as any;
+      res.status(200).json(userShowRes);
     } catch (e) {
       res.status(400).json({message: 'Error updating show on your list, ' + e.message});
     }
