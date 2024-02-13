@@ -24,13 +24,13 @@ export class Show {
   @Column({unique: true})
   title: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({type: 'text'})
   description: string;
 
-  @Column({type: 'enum', enum: ShowType, nullable: true})
+  @Column({type: 'enum', enum: ShowType})
   type: ShowType;
 
-  @Column({type: 'int', nullable: true})
+  @Column({type: 'int', default: 1})
   episodes: number;
 
   @Column({type: 'date', nullable: true})
