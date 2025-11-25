@@ -7,7 +7,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "show")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract sealed class ShowEntity permits MovieEntity, TvSeriesEntity {
+public abstract class ShowEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

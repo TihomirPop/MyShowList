@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Table(name = "tv_series")
 public final class TvSeriesEntity extends ShowEntity {
 
-    @Column(name = "episodes_count", nullable = false)
-    private Integer episodesCount;
+    @Column(name = "episode_count", nullable = false)
+    private Integer episodeCount;
 
     @Column(name = "started_date", nullable = false)
     private LocalDate startedDate;
@@ -19,12 +19,12 @@ public final class TvSeriesEntity extends ShowEntity {
     @Column(name = "ended_date", nullable = false)
     private LocalDate endedDate;
 
-    public Integer getEpisodesCount() {
-        return episodesCount;
+    public Integer getEpisodeCount() {
+        return episodeCount;
     }
 
-    public void setEpisodesCount(Integer episodesCount) {
-        this.episodesCount = episodesCount;
+    public void setEpisodeCount(Integer episodesCount) {
+        this.episodeCount = episodesCount;
     }
 
     public LocalDate getStartedDate() {
