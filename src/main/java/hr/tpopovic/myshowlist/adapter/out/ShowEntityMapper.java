@@ -10,7 +10,7 @@ public class ShowEntityMapper {
     public static Show toDomain(ShowEntity showEntity) {
         return switch (showEntity) {
             case MovieEntity movieEntity -> toDomain(movieEntity);
-            case TvSeriesEntity _ -> throw new UnsupportedOperationException("Not implemented yet");
+            case TvSeriesEntity tvSeriesEntity -> toDomain(tvSeriesEntity);
             default -> throw new IllegalStateException("Unexpected value: " + showEntity);
         };
     }
@@ -21,6 +21,16 @@ public class ShowEntityMapper {
                 new Title(movieEntity.getTitle()),
                 new Description(movieEntity.getDescription()),
                 movieEntity.getReleaseDate()
+        );
+    }
+
+    private static TvSeries toDomain(TvSeriesEntity tvSeriesEntity) {
+        return new TvSeries(
+                new ShowId(tvSeriesEntity.getId()),
+                new Title(tvSeriesEntity.getTitle()),
+                new Description(tvSeriesEntity.getDescription()),
+                new EpisodeCount(tvSeriesEntity.getEpisodeCount()),
+                DateRange.from(tvSeriesEntity.getStartedDate()).to(tvSeriesEntity.getEndedDate())
         );
     }
 }

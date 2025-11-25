@@ -19,4 +19,11 @@ public final class TvSeries extends Show {
         this.airingPeriod = airingPeriod;
     }
 
+    public EpisodeCount episodeCount() {
+        return episodeCount;
+    }
+
+    public DateRange airingPeriod() {
+        return airingPeriod;
+    }
 }

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "movie")
-public final class MovieEntity extends ShowEntity {
+public class MovieEntity extends ShowEntity {
 
     @Column(name = "release_date", nullable = false)
     private LocalDate releaseDate;

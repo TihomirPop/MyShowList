@@ -40,7 +40,42 @@ class ShowEntityMapperTest {
                         new Description("A mind-bending thriller"),
                         LocalDate.of(2010, 7, 16)
                 );
+    }
 
+    @Test
+    void should_map_tv_series_entity_to_tv_series() {
+        // given
+        var tvSeriesEntity = new TvSeriesEntity();
+        UUID id = UUID.randomUUID();
+        tvSeriesEntity.setId(id);
+        tvSeriesEntity.setTitle("Breaking Bad");
+        tvSeriesEntity.setDescription("A high school chemistry teacher turned methamphetamine producer.");
+        tvSeriesEntity.setEpisodeCount(62);
+        tvSeriesEntity.setStartedDate(LocalDate.of(2008, 1, 20));
+        tvSeriesEntity.setEndedDate(LocalDate.of(2013, 9, 29));
+
+        // when
+        Show show = ShowEntityMapper.toDomain(tvSeriesEntity);
+
+        // then
+        assertThat(show)
+                .isNotNull()
+                .asInstanceOf(type(TvSeries.class))
+                .extracting(
+                        TvSeries::id,
+                        TvSeries::title,
+                        TvSeries::description,
+                        TvSeries::episodeCount,
+                        TvSeries::airingPeriod
+                )
+                .containsExactly(
+                        new ShowId(UUID.fromString(id.toString())),
+                        new Title("Breaking Bad"),
+                        new Description("A high school chemistry teacher turned methamphetamine producer."),
+                        new EpisodeCount(62),
+                        DateRange.from(LocalDate.of(2008, 1, 20))
+                                .to(LocalDate.of(2013, 9, 29))
+                );
     }
 
 }

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "tv_series")
-public final class TvSeriesEntity extends ShowEntity {
+public class TvSeriesEntity extends ShowEntity {
 
     @Column(name = "episode_count", nullable = false)
     private Integer episodeCount;
