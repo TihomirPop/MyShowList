@@ -2,7 +2,7 @@ package hr.tpopovic.myshowlist.application.domain.model;
 
 import static java.util.Objects.requireNonNull;
 
-public abstract sealed class Show permits Movie {
+public abstract sealed class Show permits Movie, TvSeries {
 
     private final ShowId id;
     private final Title title;
