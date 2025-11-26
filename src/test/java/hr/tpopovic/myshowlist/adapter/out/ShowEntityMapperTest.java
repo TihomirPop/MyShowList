@@ -7,6 +7,7 @@ import hr.tpopovic.myshowlist.application.domain.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +23,7 @@ class ShowEntityMapperTest {
         movieEntity.setId(id);
         movieEntity.setTitle("Inception");
         movieEntity.setDescription("A mind-bending thriller");
+        movieEntity.setGenres(Set.of());
         movieEntity.setReleaseDate(LocalDate.of(2010, 7, 16));
 
         // when
@@ -53,6 +55,7 @@ class ShowEntityMapperTest {
         tvSeriesEntity.setId(id);
         tvSeriesEntity.setTitle("Breaking Bad");
         tvSeriesEntity.setDescription("A high school chemistry teacher turned methamphetamine producer.");
+        tvSeriesEntity.setGenres(Set.of());
         tvSeriesEntity.setEpisodeCount(62);
         tvSeriesEntity.setStartedDate(LocalDate.of(2008, 1, 20));
         tvSeriesEntity.setEndedDate(LocalDate.of(2013, 9, 29));
