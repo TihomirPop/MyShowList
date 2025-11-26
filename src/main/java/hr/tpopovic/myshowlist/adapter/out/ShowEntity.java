@@ -2,6 +2,7 @@ package hr.tpopovic.myshowlist.adapter.out;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +20,14 @@ public abstract class ShowEntity {
 
     @Column(name = "description", nullable = false, length = 65535)
     private String description;
+
+    @ManyToMany
+    @JoinTable(
+            name = "show_genre",
+            joinColumns = @JoinColumn(name = "show_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    Set<GenreEntity> genres;
 
     public UUID getId() {
         return id;
