@@ -1,6 +1,7 @@
 package hr.tpopovic.myshowlist.adapter.in;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public final class TvSeriesDto extends ShowDto {
 
@@ -12,11 +13,12 @@ public final class TvSeriesDto extends ShowDto {
             String id,
             String title,
             String description,
+            Set<String> genres,
             Integer episodeCount,
             LocalDate startDate,
             LocalDate endDate
     ) {
-        super(id, title, description);
+        super(id, title, description, genres);
         this.episodeCount = episodeCount;
         this.startDate = startDate;
         this.endDate = endDate;

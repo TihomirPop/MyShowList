@@ -1,8 +1,12 @@
 package hr.tpopovic.myshowlist.adapter.in;
 
+import hr.tpopovic.myshowlist.application.domain.model.Genre;
 import hr.tpopovic.myshowlist.application.domain.model.Movie;
 import hr.tpopovic.myshowlist.application.domain.model.Show;
 import hr.tpopovic.myshowlist.application.domain.model.TvSeries;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ShowDtoMapper {
 
@@ -22,6 +26,7 @@ public class ShowDtoMapper {
                 movie.id().id().toString(),
                 movie.title().name(),
                 movie.description().text(),
+                getGenres(movie),
                 movie.releaseDate()
         );
     }
@@ -31,10 +36,18 @@ public class ShowDtoMapper {
                 tvSeries.id().id().toString(),
                 tvSeries.title().name(),
                 tvSeries.description().text(),
+                getGenres(tvSeries),
                 tvSeries.episodeCount().count(),
                 tvSeries.airingPeriod().from(),
                 tvSeries.airingPeriod().to()
         );
+    }
+
+    private static Set<String> getGenres(Show show) {
+        return show.genres()
+                .stream()
+                .map(Genre::name)
+                .collect(Collectors.toSet());
     }
 
 }

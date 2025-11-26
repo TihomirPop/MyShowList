@@ -1,13 +1,14 @@
 package hr.tpopovic.myshowlist.adapter.in;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public final class MovieDto extends ShowDto {
 
     private final LocalDate releaseDate;
 
-    public MovieDto(String id, String title, String description, LocalDate releaseDate) {
-        super(id, title, description);
+    public MovieDto(String id, String title, String description, Set<String> genres, LocalDate releaseDate) {
+        super(id, title, description, genres);
         this.releaseDate = releaseDate;
     }
 
