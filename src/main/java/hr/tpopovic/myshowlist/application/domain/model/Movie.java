@@ -1,6 +1,7 @@
 package hr.tpopovic.myshowlist.application.domain.model;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static java.util.Objects.requireNonNull;
 
@@ -8,13 +9,14 @@ public final class Movie extends Show {
 
     private final LocalDate releaseDate;
 
-    public Movie(ShowId id, Title title, Description description, LocalDate releaseDate) {
+    public Movie(ShowId id, Title title, Description description, Set<Genre> genres, LocalDate releaseDate) {
         requireNonNull(id, "id");
         requireNonNull(title, "title");
         requireNonNull(description, "description");
+        requireNonNull(genres, "genres");
         requireNonNull(releaseDate, "releaseDate");
 
-        super(id, title, description);
+        super(id, title, description, Set.copyOf(genres));
         this.releaseDate = releaseDate;
     }
 

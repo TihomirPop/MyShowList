@@ -27,7 +27,7 @@ public abstract class ShowEntity {
             joinColumns = @JoinColumn(name = "show_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    Set<GenreEntity> genres;
+    private Set<GenreEntity> genres;
 
     public UUID getId() {
         return id;
@@ -51,6 +51,14 @@ public abstract class ShowEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<GenreEntity> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<GenreEntity> genres) {
+        this.genres = genres;
     }
 
 }

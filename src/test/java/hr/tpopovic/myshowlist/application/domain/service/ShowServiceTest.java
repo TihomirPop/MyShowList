@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -27,6 +28,7 @@ class ShowServiceTest {
                 new ShowId(java.util.UUID.randomUUID()),
                 new Title("Inception"),
                 new Description("A mind-bending thriller"),
+                Set.of(),
                 LocalDate.of(2010, 7, 16)
         );
         when(forLoadingShows.load())
