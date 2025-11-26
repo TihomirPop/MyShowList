@@ -1,5 +1,8 @@
 package hr.tpopovic.myshowlist.adapter.out;
 
+import hr.tpopovic.myshowlist.adapter.out.show.MovieEntity;
+import hr.tpopovic.myshowlist.adapter.out.show.ShowEntityMapper;
+import hr.tpopovic.myshowlist.adapter.out.show.TvSeriesEntity;
 import hr.tpopovic.myshowlist.application.domain.model.*;
 import org.junit.jupiter.api.Test;
 

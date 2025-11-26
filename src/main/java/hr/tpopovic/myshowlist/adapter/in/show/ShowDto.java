@@ -1,4 +1,4 @@
-package hr.tpopovic.myshowlist.adapter.in;
+package hr.tpopovic.myshowlist.adapter.in.show;
 
 import java.util.Set;
 

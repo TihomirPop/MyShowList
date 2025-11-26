@@ -1,4 +1,4 @@
-package hr.tpopovic.myshowlist.adapter.out;
+package hr.tpopovic.myshowlist.adapter.out.show;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

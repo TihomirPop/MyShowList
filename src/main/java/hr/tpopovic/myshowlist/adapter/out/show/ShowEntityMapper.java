@@ -1,4 +1,4 @@
-package hr.tpopovic.myshowlist.adapter.out;
+package hr.tpopovic.myshowlist.adapter.out.show;
 
 import hr.tpopovic.myshowlist.application.domain.model.*;
 
