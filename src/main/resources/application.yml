@@ -1,3 +1,9 @@
 spring:
   application:
     name: MyShowList
+
+service:
+  api:
+    root-path: /api/v1
+    show:
+      path: /shows
