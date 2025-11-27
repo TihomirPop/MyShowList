@@ -20,6 +20,7 @@ public class ShowService implements FetchShows {
 
         return switch (result) {
             case LoadShowsResult.Success success -> new FetchShowsResult.Success(success.shows());
+            case LoadShowsResult.Failure _ -> new FetchShowsResult.Failure();
         };
     }
 

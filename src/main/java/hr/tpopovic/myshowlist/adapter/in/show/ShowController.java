@@ -24,6 +24,7 @@ public class ShowController {
 
         return switch (response) {
             case ShowResponse.Ok ok -> ResponseEntity.ok(ok);
+            case ShowResponse.Failure failure -> ResponseEntity.internalServerError().body(failure);
         };
     }
 

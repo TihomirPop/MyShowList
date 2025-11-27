@@ -15,4 +15,9 @@ public sealed interface FetchShowsResult {
         }
 
     }
+
+    record Failure() implements FetchShowsResult {
+
+    }
+
 }

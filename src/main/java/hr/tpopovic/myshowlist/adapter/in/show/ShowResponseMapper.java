@@ -13,6 +13,7 @@ public class ShowResponseMapper {
     static ShowResponse toResponse(FetchShowsResult result) {
         return switch (result) {
             case FetchShowsResult.Success success -> success(success);
+            case FetchShowsResult.Failure _ -> new ShowResponse.Failure("Failed to fetch shows");
         };
     }
 

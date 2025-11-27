@@ -15,4 +15,8 @@ public sealed interface LoadShowsResult {
         }
 
     }
+
+    record Failure() implements LoadShowsResult {
+
+    }
 }

@@ -8,4 +8,8 @@ public sealed interface ShowResponse {
 
     }
 
+    record Failure(String message) implements ShowResponse {
+
+    }
+
 }
