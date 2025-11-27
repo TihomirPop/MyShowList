@@ -7,7 +7,7 @@ public record Password(
 ) {
 
     public Password {
-        requireNonNull(value, "value");
+        requireNonNull(value, "Password value cannot be null");
 
         if (value.isBlank()) {
             throw new IllegalArgumentException("Password cannot be blank");

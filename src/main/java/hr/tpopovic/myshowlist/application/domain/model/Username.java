@@ -7,7 +7,7 @@ public record Username(
 ) {
 
     public Username {
-        requireNonNull(value, "value");
+        requireNonNull(value, "Username value cannot be null");
 
         if (value.isBlank()) {
             throw new IllegalArgumentException("Username cannot be blank");

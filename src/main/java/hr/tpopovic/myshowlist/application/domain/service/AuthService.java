@@ -26,7 +26,7 @@ public class AuthService implements RegisterUser {
         SavingUserResult result = forSavingUser.save(user);
 
         return switch (result) {
-            case SavingUserResult.Success _ -> new RegisterUserResult.Success(user);
+            case SavingUserResult.Success _ -> new RegisterUserResult.Success();
             case SavingUserResult.Failure _ -> new RegisterUserResult.Failure();
         };
     }

@@ -6,10 +6,6 @@ public sealed interface RegisterResponse {
 
     }
 
-    record DuplicateUsername() implements RegisterResponse {
-
-    }
-
     record Error(String message) implements RegisterResponse {
 
     }
