@@ -16,4 +16,8 @@ public sealed interface RegisterUserResult {
 
     }
 
+    record Failure() implements RegisterUserResult {
+
+    }
+
 }

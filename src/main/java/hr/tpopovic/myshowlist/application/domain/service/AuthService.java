@@ -27,6 +27,7 @@ public class AuthService implements RegisterUser {
 
         return switch (result) {
             case SavingUserResult.Success _ -> new RegisterUserResult.Success(user);
+            case SavingUserResult.Failure _ -> new RegisterUserResult.Failure();
         };
     }
 
