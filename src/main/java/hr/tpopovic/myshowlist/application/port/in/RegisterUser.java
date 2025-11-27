@@ -4,6 +4,6 @@ import hr.tpopovic.myshowlist.application.domain.model.RegisteringUser;
 
 public interface RegisterUser {
 
-    RegisterUserResult register(RegisteringUser user);
+    RegisterUserResult register(RegisteringUser registeringUser);
 
 }
