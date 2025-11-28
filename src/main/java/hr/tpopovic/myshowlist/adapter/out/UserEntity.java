@@ -2,6 +2,9 @@ package hr.tpopovic.myshowlist.adapter.out;
 
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "\"user\"")
 public class UserEntity {
@@ -16,6 +19,9 @@ public class UserEntity {
 
     @Column(name = "password_hash", nullable = false, length = 60)
     private String passwordHash;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserShowEntity> userShows = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -41,4 +47,11 @@ public class UserEntity {
         this.passwordHash = passwordHash;
     }
 
+    public Set<UserShowEntity> getUserShows() {
+        return userShows;
+    }
+
+    public void setUserShows(Set<UserShowEntity> userShows) {
+        this.userShows = userShows;
+    }
 }
