@@ -9,3 +9,5 @@ service:
       path: /shows
     register:
       path: /register
+    login:
+      path: /login
