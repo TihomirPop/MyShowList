@@ -2,14 +2,11 @@ package hr.tpopovic.myshowlist.adapter.out;
 
 import hr.tpopovic.myshowlist.adapter.out.show.ShowLoader;
 import hr.tpopovic.myshowlist.adapter.out.show.ShowRepository;
-import hr.tpopovic.myshowlist.application.port.out.ForHashingPassword;
-import hr.tpopovic.myshowlist.application.port.out.ForLoadingShows;
-import hr.tpopovic.myshowlist.application.port.out.ForSavingUser;
+import hr.tpopovic.myshowlist.application.port.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password4j.BcryptPassword4jPasswordEncoder;
 
 @Configuration
 public class OutAdapterConfig {
@@ -32,6 +29,21 @@ public class OutAdapterConfig {
     @Bean
     public ForSavingUser forSavingUser(UserRepository userRepository) {
         return new UserSaver(userRepository);
+    }
+
+    @Bean
+    public ForFetchingPasswordHash forFetchingPasswordHash(UserRepository userRepository) {
+        return new PasswordHashFetcher(userRepository);
+    }
+
+    @Bean
+    public ForCheckingPassword forCheckingPassword(PasswordEncoder passwordEncoder) {
+        return new PasswordChecker(passwordEncoder);
+    }
+
+    @Bean
+    public ForGeneratingToken forGeneratingToken(JwtProperties properties) {
+        return new JwtTokenGenerator(properties);
     }
 
 }
