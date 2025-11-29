@@ -1,10 +1,9 @@
 package hr.tpopovic.myshowlist.adapter.in.auth;
 
-import hr.tpopovic.myshowlist.application.port.in.*;
+import hr.tpopovic.myshowlist.adapter.in.FailedValidationResponse;
 import hr.tpopovic.myshowlist.application.domain.model.Password;
 import hr.tpopovic.myshowlist.application.domain.model.Username;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import hr.tpopovic.myshowlist.application.port.in.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${service.api.root-path}")
 public class AuthController {
 
-    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final RegisterUser registerUser;
     private final LoginUser loginUser;
 
@@ -46,16 +44,16 @@ public class AuthController {
 
         return switch (result) {
             case LoginResult.Success success -> ResponseEntity.ok(new LoginResponse.Ok(success.token().value()));
-            case LoginResult.WrongCredentials wrongCredentials -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            case LoginResult.WrongCredentials _ -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new LoginResponse.Error("Wrong username or password"));
-            case LoginResult.Failure failure -> ResponseEntity.internalServerError()
+            case LoginResult.Failure _ -> ResponseEntity.internalServerError()
                     .body(new LoginResponse.Error("Login failed"));
         };
     }
 
     @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
-    public ResponseEntity<RegisterResponse> handleValidation(Exception e) {
+    public ResponseEntity<FailedValidationResponse> handleValidation(Exception e) {
         return ResponseEntity.badRequest()
-                .body(new RegisterResponse.Error(e.getMessage()));
+                .body(new FailedValidationResponse(e.getMessage()));
     }
 }

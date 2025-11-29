@@ -11,6 +11,8 @@ service:
       path: /register
     login:
       path: /login
+    user-show:
+      path: /user-shows
   jwt:
     base64-secret: ${JWT_SECRET}
     expiration: 1h

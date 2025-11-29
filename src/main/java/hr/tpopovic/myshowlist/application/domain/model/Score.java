@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 public sealed interface Score {
 
-    record Rated(Integer value) implements Score {
+    record Rated(Short value) implements Score {
 
         public Rated {
             requireNonNull(value, "Score value cannot be null");
