@@ -18,4 +18,8 @@ public sealed interface ValidateTokenResult {
 
     }
 
+    record Failure() implements ValidateTokenResult{
+
+    }
+
 }

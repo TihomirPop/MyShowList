@@ -27,9 +27,11 @@ public class DomainConfig {
         return new AuthService(
                 forHashingPassword,
                 forSavingUser,
-                        forFetchingPasswordHash,
+                forFetchingPasswordHash,
                 forCheckingPassword,
-                forGeneratingToken
+                forGeneratingToken,
+                (token) -> false,
+                (token) -> null
         );
     }
 }

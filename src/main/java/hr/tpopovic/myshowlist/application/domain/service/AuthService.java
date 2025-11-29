@@ -4,26 +4,32 @@ import hr.tpopovic.myshowlist.application.domain.model.*;
 import hr.tpopovic.myshowlist.application.port.in.*;
 import hr.tpopovic.myshowlist.application.port.out.*;
 
-public class AuthService implements RegisterUser, LoginUser {
+public class AuthService implements RegisterUser, LoginUser, ValidateToken {
 
     private final ForHashingPassword forHashingPassword;
     private final ForSavingUser forSavingUser;
     private final ForFetchingPasswordHash forFetchingPasswordHash;
     private final ForCheckingPassword forCheckingPassword;
     private final ForGeneratingToken forGeneratingToken;
+    private final ForValidatingToken forValidatingToken;
+    private final ForExtractingUsernameFromToken forExtractingUsernameFromToken;
 
     public AuthService(
             ForHashingPassword forHashingPassword,
             ForSavingUser forSavingUser,
             ForFetchingPasswordHash forFetchingPasswordHash,
             ForCheckingPassword forCheckingPassword,
-            ForGeneratingToken forGeneratingToken
+            ForGeneratingToken forGeneratingToken,
+            ForValidatingToken forValidatingToken,
+            ForExtractingUsernameFromToken forExtractingUsernameFromToken
     ) {
         this.forHashingPassword = forHashingPassword;
         this.forSavingUser = forSavingUser;
         this.forFetchingPasswordHash = forFetchingPasswordHash;
         this.forCheckingPassword = forCheckingPassword;
         this.forGeneratingToken = forGeneratingToken;
+        this.forValidatingToken = forValidatingToken;
+        this.forExtractingUsernameFromToken = forExtractingUsernameFromToken;
     }
 
     @Override
@@ -48,6 +54,21 @@ public class AuthService implements RegisterUser, LoginUser {
             case FetchPasswordHashResult.Success(HashedPassword hashedPassword) -> checkPasswordAndGenerateToken(username, password, hashedPassword);
             case FetchPasswordHashResult.NotFound _ -> new LoginResult.WrongCredentials();
             case FetchPasswordHashResult.Failure _ -> new LoginResult.Failure();
+        };
+    }
+
+    @Override
+    public ValidateTokenResult validate(Token token) {
+        boolean isValid = forValidatingToken.validate(token);
+        if (!isValid) {
+            return new ValidateTokenResult.Invalid();
+        }
+
+        UsernameFromTokenExtractionResult result = forExtractingUsernameFromToken.extract(token);
+
+        return switch (result) {
+            case UsernameFromTokenExtractionResult.Success(Username username) -> new ValidateTokenResult.Valid(username);
+            case UsernameFromTokenExtractionResult.Failure _ -> new ValidateTokenResult.Failure();
         };
     }
 

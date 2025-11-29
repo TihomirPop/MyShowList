@@ -46,7 +46,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         switch (result) {
             case ValidateTokenResult.Valid(Username username) -> setAuthenticationContext(username, request);
-            case ValidateTokenResult.Invalid _ -> {
+            case ValidateTokenResult.Invalid _, ValidateTokenResult.Failure _ -> {
                 // noop
             }
         }
