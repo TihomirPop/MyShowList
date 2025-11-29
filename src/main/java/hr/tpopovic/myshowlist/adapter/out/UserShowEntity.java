@@ -13,16 +13,14 @@ public class UserShowEntity {
     @EmbeddedId
     private UserShowId id;
 
-    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     private UserEntity user;
 
-    @MapsId("showId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "show_id", nullable = false)
+    @JoinColumn(name = "show_id", nullable = false, insertable = false, updatable = false)
     private ShowEntity show;
 
     @NotNull

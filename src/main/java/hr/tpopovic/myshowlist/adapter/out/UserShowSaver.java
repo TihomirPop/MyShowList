@@ -5,9 +5,13 @@ import hr.tpopovic.myshowlist.application.domain.model.Status;
 import hr.tpopovic.myshowlist.application.port.out.ForSavingUserShow;
 import hr.tpopovic.myshowlist.application.port.out.SaveUserShowCommand;
 import hr.tpopovic.myshowlist.application.port.out.SaveUserShowResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 
 public class UserShowSaver implements ForSavingUserShow {
+
+    private static final Logger log = LoggerFactory.getLogger(UserShowSaver.class);
 
     private final UserShowRepository userShowRepository;
 
@@ -32,6 +36,7 @@ public class UserShowSaver implements ForSavingUserShow {
         } catch (DataIntegrityViolationException e) {
             return parseException(e);
         } catch (Exception e) {
+            log.error("Error saving user show for userId: {} and showId: {}", command.userId().id(), command.showId().id(), e);
             return new SaveUserShowResult.Failure();
         }
     }
@@ -62,6 +67,7 @@ public class UserShowSaver implements ForSavingUserShow {
             return new SaveUserShowResult.DuplicateEntry();
         }
 
+        log.error("Data integrity violation error saving user show", e);
         return new SaveUserShowResult.Failure();
     }
 
