@@ -43,7 +43,7 @@ public class OutAdapterConfig {
 
     @Bean
     public ForGeneratingToken forGeneratingToken(JwtProperties properties) {
-        return new JwtTokenGenerator(properties);
+        return new JwtTokenManager(properties);
     }
 
 }
