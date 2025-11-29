@@ -3,7 +3,6 @@ package hr.tpopovic.myshowlist.config;
 import hr.tpopovic.myshowlist.application.domain.service.AuthService;
 import hr.tpopovic.myshowlist.application.domain.service.ShowService;
 import hr.tpopovic.myshowlist.application.port.in.FetchShows;
-import hr.tpopovic.myshowlist.application.port.in.RegisterUser;
 import hr.tpopovic.myshowlist.application.port.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +16,14 @@ public class DomainConfig {
     }
 
     @Bean
-    public RegisterUser registerUser(
+    public AuthService authService(
             ForHashingPassword forHashingPassword,
             ForSavingUser forSavingUser,
             ForFetchingPasswordHash forFetchingPasswordHash,
             ForCheckingPassword forCheckingPassword,
-            ForGeneratingToken forGeneratingToken
+            ForGeneratingToken forGeneratingToken,
+            ForValidatingToken forValidatingToken,
+            ForExtractingUsernameFromToken forExtractingUsernameFromToken
     ) {
         return new AuthService(
                 forHashingPassword,
@@ -30,8 +31,8 @@ public class DomainConfig {
                 forFetchingPasswordHash,
                 forCheckingPassword,
                 forGeneratingToken,
-                (token) -> false,
-                (token) -> null
+                forValidatingToken,
+                forExtractingUsernameFromToken
         );
     }
 }

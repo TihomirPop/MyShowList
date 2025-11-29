@@ -1,6 +1,6 @@
 package hr.tpopovic.myshowlist.adapter.in.auth;
 
-import hr.tpopovic.myshowlist.application.port.in.ValidateTokenResult;
+import hr.tpopovic.myshowlist.application.port.in.ValidateToken;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-    public JwtAuthFilter jwtAuthFilter() {
-        return new JwtAuthFilter(_ -> new ValidateTokenResult.Invalid());
+    public JwtAuthFilter jwtAuthFilter(ValidateToken validateToken) {
+        return new JwtAuthFilter(validateToken);
     }
 
     @Bean

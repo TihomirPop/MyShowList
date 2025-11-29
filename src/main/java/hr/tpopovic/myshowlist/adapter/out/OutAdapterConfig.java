@@ -42,7 +42,7 @@ public class OutAdapterConfig {
     }
 
     @Bean
-    public ForGeneratingToken forGeneratingToken(JwtProperties properties) {
+    public JwtTokenManager jwtTokenManager(JwtProperties properties) {
         return new JwtTokenManager(properties);
     }
 
