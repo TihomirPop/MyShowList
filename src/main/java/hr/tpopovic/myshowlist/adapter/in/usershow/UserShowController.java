@@ -21,8 +21,8 @@ public class UserShowController {
 
     private final AddUserShow addUserShow;
 
-    public UserShowController() {
-        this.addUserShow = (_) -> new AddUserShowResult.Failure();
+    public UserShowController(AddUserShow addUserShow) {
+        this.addUserShow = addUserShow;
     }
 
     @PostMapping

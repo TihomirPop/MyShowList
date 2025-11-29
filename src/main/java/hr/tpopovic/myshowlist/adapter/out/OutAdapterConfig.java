@@ -46,4 +46,14 @@ public class OutAdapterConfig {
         return new JwtTokenManager(properties);
     }
 
+    @Bean
+    public UserFetcher userFetcher(UserRepository userRepository) {
+        return new UserFetcher(userRepository);
+    }
+
+    @Bean
+    public UserShowSaver userShowSaver(UserShowRepository userShowRepository) {
+        return new UserShowSaver(userShowRepository);
+    }
+
 }
