@@ -1,4 +1,4 @@
-package hr.tpopovic.myshowlist.adapter.in;
+package hr.tpopovic.myshowlist.adapter.in.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
