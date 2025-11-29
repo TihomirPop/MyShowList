@@ -6,6 +6,10 @@ public sealed interface AddUserShowResult {
 
     }
 
+    record UserNotFound() implements AddUserShowResult {
+
+    }
+
     record ShowNotFound() implements AddUserShowResult {
 
     }
