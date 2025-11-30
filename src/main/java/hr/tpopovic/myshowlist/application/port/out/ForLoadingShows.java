@@ -1,7 +1,11 @@
 package hr.tpopovic.myshowlist.application.port.out;
 
+import hr.tpopovic.myshowlist.application.domain.model.ShowId;
+
 public interface ForLoadingShows {
 
     LoadShowsResult load();
+
+    LoadShowResult load(ShowId showId);
 
 }

@@ -1,7 +1,9 @@
 package hr.tpopovic.myshowlist.adapter.out.show;
 
 import hr.tpopovic.myshowlist.application.domain.model.Show;
+import hr.tpopovic.myshowlist.application.domain.model.ShowId;
 import hr.tpopovic.myshowlist.application.port.out.ForLoadingShows;
+import hr.tpopovic.myshowlist.application.port.out.LoadShowResult;
 import hr.tpopovic.myshowlist.application.port.out.LoadShowsResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,20 @@ public class ShowLoader implements ForLoadingShows {
             return new LoadShowsResult.Failure();
         }
 
+    }
+
+    @Override
+    public LoadShowResult load(ShowId showId) {
+        try {
+            return showRepository.findById(showId.id())
+                    .map(ShowEntityMapper::toDomain)
+                    .<LoadShowResult>map(LoadShowResult.Success::new)
+                    .orElseGet(LoadShowResult.NotFound::new);
+
+        } catch (RuntimeException e) {
+            log.error("Error loading show with id: {}", showId.id(), e);
+            return new LoadShowResult.Failure();
+        }
     }
 
 }
