@@ -38,4 +38,6 @@ public abstract sealed class Show permits Movie, TvSeries {
     public Set<Genre> genres() {
         return Set.copyOf(genres);
     }
+
+    public abstract boolean tooManyEpisodesWatched(Progress watched);
 }

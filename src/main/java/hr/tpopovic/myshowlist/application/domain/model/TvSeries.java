@@ -36,4 +36,10 @@ public final class TvSeries extends Show {
     public DateRange airingPeriod() {
         return airingPeriod;
     }
+
+    @Override
+    public boolean tooManyEpisodesWatched(Progress watched) {
+        return watched.value() > episodeCount.count();
+    }
+
 }

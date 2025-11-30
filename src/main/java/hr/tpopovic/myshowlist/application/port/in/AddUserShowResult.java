@@ -14,6 +14,10 @@ public sealed interface AddUserShowResult {
 
     }
 
+    record InvalidInput() implements AddUserShowResult {
+
+    }
+
     record DuplicateEntry() implements AddUserShowResult {
 
     }

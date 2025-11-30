@@ -23,4 +23,10 @@ public final class Movie extends Show {
     public LocalDate releaseDate() {
         return releaseDate;
     }
+
+    @Override
+    public boolean tooManyEpisodesWatched(Progress watched) {
+        return watched.value() > 1;
+    }
+
 }

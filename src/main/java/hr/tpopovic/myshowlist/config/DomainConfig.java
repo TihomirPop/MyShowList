@@ -39,7 +39,10 @@ public class DomainConfig {
     }
 
     @Bean
-    public AddUserShow addUserShow(ForFetchingUser forFetchingUser, ForSavingUserShow forSavingUserShow) {
-        return new UserShowService(forFetchingUser, forSavingUserShow);
+    public AddUserShow addUserShow(
+            ForLoadingShows forLoadingShows,
+            ForFetchingUser forFetchingUser,
+            ForSavingUserShow forSavingUserShow) {
+        return new UserShowService(forLoadingShows, forFetchingUser, forSavingUserShow);
     }
 }
