@@ -2,9 +2,9 @@ package hr.tpopovic.myshowlist.adapter.in.usershow;
 
 import hr.tpopovic.myshowlist.adapter.in.FailedValidationResponse;
 import hr.tpopovic.myshowlist.application.domain.model.*;
-import hr.tpopovic.myshowlist.application.port.in.AddUserShow;
-import hr.tpopovic.myshowlist.application.port.in.AddUserShowCommand;
-import hr.tpopovic.myshowlist.application.port.in.AddUserShowResult;
+import hr.tpopovic.myshowlist.application.port.in.UpsertUserShow;
+import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowCommand;
+import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,18 +19,30 @@ import static java.util.Objects.isNull;
 @RequestMapping("${service.api.root-path}${service.api.user-show.path}")
 public class UserShowController {
 
-    private final AddUserShow addUserShow;
+    private final UpsertUserShow upsertUserShow;
 
-    public UserShowController(AddUserShow addUserShow) {
-        this.addUserShow = addUserShow;
+    public UserShowController(UpsertUserShow upsertUserShow) {
+        this.upsertUserShow = upsertUserShow;
     }
 
     @PostMapping
-    public ResponseEntity<AddUserShowResponse> addUserShow(
+    public ResponseEntity<UpsertUserShowResponse> addUserShow(
             @RequestBody AddUserShowRequest request,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        AddUserShowCommand addUserShowCommand = new AddUserShowCommand(
+        return upsert(request, userDetails);
+    }
+
+    @PutMapping
+    public ResponseEntity<UpsertUserShowResponse> updateUserShow(
+            @RequestBody AddUserShowRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return upsert(request, userDetails);
+    }
+
+    private ResponseEntity<UpsertUserShowResponse> upsert(AddUserShowRequest request, UserDetails userDetails) {
+        UpsertUserShowCommand upsertUserShowCommand = new UpsertUserShowCommand(
                 new Username(userDetails.getUsername()),
                 new ShowId(UUID.fromString(request.showId())),
                 new Progress(request.progress()),
@@ -38,15 +50,16 @@ public class UserShowController {
                 mapScore(request.score())
         );
 
-        AddUserShowResult result = addUserShow.add(addUserShowCommand);
+        UpsertUserShowResult result = upsertUserShow.upsert(upsertUserShowCommand);
 
         return switch (result) {
-            case AddUserShowResult.Success _ -> ResponseEntity.status(HttpStatus.CREATED).build();
-            case AddUserShowResult.UserNotFound _, AddUserShowResult.ShowNotFound _ -> ResponseEntity.notFound().build();
-            case AddUserShowResult.InvalidInput _ -> ResponseEntity.badRequest().build();
-            case AddUserShowResult.Failure _ -> ResponseEntity.internalServerError().build();
+            case UpsertUserShowResult.Success _ -> ResponseEntity.status(HttpStatus.CREATED).build();
+            case UpsertUserShowResult.UserNotFound _, UpsertUserShowResult.ShowNotFound _ -> ResponseEntity.notFound().build();
+            case UpsertUserShowResult.InvalidInput _ -> ResponseEntity.badRequest().build();
+            case UpsertUserShowResult.Failure _ -> ResponseEntity.internalServerError().build();
         };
     }
+
 
     @ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
     public ResponseEntity<FailedValidationResponse> handleValidation(Exception e) {

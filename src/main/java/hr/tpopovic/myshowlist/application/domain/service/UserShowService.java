@@ -1,12 +1,12 @@
 package hr.tpopovic.myshowlist.application.domain.service;
 
 import hr.tpopovic.myshowlist.application.domain.model.*;
-import hr.tpopovic.myshowlist.application.port.in.AddUserShow;
-import hr.tpopovic.myshowlist.application.port.in.AddUserShowCommand;
-import hr.tpopovic.myshowlist.application.port.in.AddUserShowResult;
+import hr.tpopovic.myshowlist.application.port.in.UpsertUserShow;
+import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowCommand;
+import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowResult;
 import hr.tpopovic.myshowlist.application.port.out.*;
 
-public class UserShowService implements AddUserShow {
+public class UserShowService implements UpsertUserShow {
 
     private final ForLoadingShows forLoadingShows;
     private final ForFetchingUser forFetchingUser;
@@ -23,31 +23,31 @@ public class UserShowService implements AddUserShow {
     }
 
     @Override
-    public AddUserShowResult add(AddUserShowCommand command) {
+    public UpsertUserShowResult upsert(UpsertUserShowCommand command) {
         LoadShowResult showResult = forLoadingShows.load(command.showId());
 
         return switch (showResult) {
             case LoadShowResult.Success(Show show) -> handleShowLoaded(show, command);
-            case LoadShowResult.NotFound _ -> new AddUserShowResult.ShowNotFound();
-            case LoadShowResult.Failure _ -> new AddUserShowResult.Failure();
+            case LoadShowResult.NotFound _ -> new UpsertUserShowResult.ShowNotFound();
+            case LoadShowResult.Failure _ -> new UpsertUserShowResult.Failure();
         };
     }
 
-    private AddUserShowResult handleShowLoaded(Show show, AddUserShowCommand command) {
+    private UpsertUserShowResult handleShowLoaded(Show show, UpsertUserShowCommand command) {
         if(show.tooManyEpisodesWatched(command.progress())) {
-            return new AddUserShowResult.InvalidInput();
+            return new UpsertUserShowResult.InvalidInput();
         }
 
         FetchUserIdResult userResult = forFetchingUser.fetch(command.username());
 
         return switch (userResult) {
             case FetchUserIdResult.Success(UserId userId) -> handleUserFound(userId, command);
-            case FetchUserIdResult.UserNotFound _ -> new AddUserShowResult.UserNotFound();
-            case FetchUserIdResult.Failure _ -> new AddUserShowResult.Failure();
+            case FetchUserIdResult.UserNotFound _ -> new UpsertUserShowResult.UserNotFound();
+            case FetchUserIdResult.Failure _ -> new UpsertUserShowResult.Failure();
         };
     }
 
-    private AddUserShowResult handleUserFound(UserId userId, AddUserShowCommand command) {
+    private UpsertUserShowResult handleUserFound(UserId userId, UpsertUserShowCommand command) {
         var saveCommand = new SaveUserShowCommand(
                 userId,
                 command.showId(),
@@ -59,9 +59,9 @@ public class UserShowService implements AddUserShow {
         SaveUserShowResult saveResult = forSavingUserShow.save(saveCommand);
 
         return switch (saveResult) {
-            case SaveUserShowResult.Success _ -> new AddUserShowResult.Success();
-            case SaveUserShowResult.ShowNotFound _ -> new AddUserShowResult.ShowNotFound();
-            case SaveUserShowResult.Failure _ -> new AddUserShowResult.Failure();
+            case SaveUserShowResult.Success _ -> new UpsertUserShowResult.Success();
+            case SaveUserShowResult.ShowNotFound _ -> new UpsertUserShowResult.ShowNotFound();
+            case SaveUserShowResult.Failure _ -> new UpsertUserShowResult.Failure();
         };
     }
 
