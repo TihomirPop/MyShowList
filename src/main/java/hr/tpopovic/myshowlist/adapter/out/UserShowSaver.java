@@ -63,10 +63,6 @@ public class UserShowSaver implements ForSavingUserShow {
             return new SaveUserShowResult.ShowNotFound();
         }
 
-        if (e.getMessage().contains("unique constraint")) {
-            return new SaveUserShowResult.DuplicateEntry();
-        }
-
         log.error("Data integrity violation error saving user show", e);
         return new SaveUserShowResult.Failure();
     }

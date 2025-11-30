@@ -18,10 +18,6 @@ public sealed interface AddUserShowResult {
 
     }
 
-    record DuplicateEntry() implements AddUserShowResult {
-
-    }
-
     record Failure() implements AddUserShowResult {
 
     }

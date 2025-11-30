@@ -42,7 +42,6 @@ public class UserShowController {
 
         return switch (result) {
             case AddUserShowResult.Success _ -> ResponseEntity.status(HttpStatus.CREATED).build();
-            case AddUserShowResult.DuplicateEntry _ -> ResponseEntity.status(HttpStatus.CONFLICT).build();
             case AddUserShowResult.UserNotFound _, AddUserShowResult.ShowNotFound _ -> ResponseEntity.notFound().build();
             case AddUserShowResult.InvalidInput _ -> ResponseEntity.badRequest().build();
             case AddUserShowResult.Failure _ -> ResponseEntity.internalServerError().build();

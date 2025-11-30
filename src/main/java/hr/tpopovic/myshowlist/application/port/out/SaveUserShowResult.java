@@ -10,10 +10,6 @@ public sealed interface SaveUserShowResult {
 
     }
 
-    record DuplicateEntry() implements SaveUserShowResult {
-
-    }
-
     record Failure() implements SaveUserShowResult {
 
     }

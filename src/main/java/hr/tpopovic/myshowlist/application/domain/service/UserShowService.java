@@ -61,7 +61,6 @@ public class UserShowService implements AddUserShow {
         return switch (saveResult) {
             case SaveUserShowResult.Success _ -> new AddUserShowResult.Success();
             case SaveUserShowResult.ShowNotFound _ -> new AddUserShowResult.ShowNotFound();
-            case SaveUserShowResult.DuplicateEntry _ -> new AddUserShowResult.DuplicateEntry();
             case SaveUserShowResult.Failure _ -> new AddUserShowResult.Failure();
         };
     }
