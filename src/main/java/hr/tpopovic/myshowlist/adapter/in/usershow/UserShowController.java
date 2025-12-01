@@ -5,7 +5,6 @@ import hr.tpopovic.myshowlist.application.domain.model.*;
 import hr.tpopovic.myshowlist.application.port.in.UpsertUserShow;
 import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowCommand;
 import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowResult;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +26,7 @@ public class UserShowController {
 
     @PostMapping
     public ResponseEntity<UpsertUserShowResponse> addUserShow(
-            @RequestBody AddUserShowRequest request,
+            @RequestBody UpsertUserShowRequest request,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return upsert(request, userDetails);
@@ -35,13 +34,13 @@ public class UserShowController {
 
     @PutMapping
     public ResponseEntity<UpsertUserShowResponse> updateUserShow(
-            @RequestBody AddUserShowRequest request,
+            @RequestBody UpsertUserShowRequest request,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return upsert(request, userDetails);
     }
 
-    private ResponseEntity<UpsertUserShowResponse> upsert(AddUserShowRequest request, UserDetails userDetails) {
+    private ResponseEntity<UpsertUserShowResponse> upsert(UpsertUserShowRequest request, UserDetails userDetails) {
         UpsertUserShowCommand upsertUserShowCommand = new UpsertUserShowCommand(
                 new Username(userDetails.getUsername()),
                 new ShowId(UUID.fromString(request.showId())),
@@ -53,7 +52,7 @@ public class UserShowController {
         UpsertUserShowResult result = upsertUserShow.upsert(upsertUserShowCommand);
 
         return switch (result) {
-            case UpsertUserShowResult.Success _ -> ResponseEntity.status(HttpStatus.CREATED).build();
+            case UpsertUserShowResult.Success _ -> ResponseEntity.ok().build();
             case UpsertUserShowResult.UserNotFound _, UpsertUserShowResult.ShowNotFound _ -> ResponseEntity.notFound().build();
             case UpsertUserShowResult.InvalidInput _ -> ResponseEntity.badRequest().build();
             case UpsertUserShowResult.Failure _ -> ResponseEntity.internalServerError().build();
