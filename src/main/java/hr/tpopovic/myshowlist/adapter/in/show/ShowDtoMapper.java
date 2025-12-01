@@ -14,7 +14,7 @@ public class ShowDtoMapper {
         throw new UnsupportedOperationException("Utility class");
     }
 
-    static ShowDto toDto(Show show) {
+    public static ShowDto toDto(Show show) {
         return switch (show) {
             case Movie movie -> movie(movie);
             case TvSeries tvSeries -> tvSeries(tvSeries);

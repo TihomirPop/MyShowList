@@ -2,7 +2,7 @@ package hr.tpopovic.myshowlist.adapter.in.show;
 
 import java.util.Set;
 
-abstract sealed class ShowDto permits MovieDto, TvSeriesDto {
+public abstract sealed class ShowDto permits MovieDto, TvSeriesDto {
 
     private final String id;
     private final String title;
