@@ -10,10 +10,6 @@ public sealed interface LoadUserShowsResult {
 
     }
 
-    record UserNotFound() implements LoadUserShowsResult {
-
-    }
-
     record Failure() implements LoadUserShowsResult {
 
     }

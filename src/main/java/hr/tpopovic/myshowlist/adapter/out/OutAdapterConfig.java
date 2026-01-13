@@ -56,4 +56,9 @@ public class OutAdapterConfig {
         return new UserShowSaver(userShowRepository);
     }
 
+    @Bean
+    public UserShowLoader userShowLoader(UserShowRepository userShowRepository) {
+        return new UserShowLoader(userShowRepository);
+    }
+
 }

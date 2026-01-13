@@ -16,12 +16,13 @@ public class UserShowService implements UpsertUserShow, FetchUserShows {
     public UserShowService(
             ForLoadingShows forLoadingShows,
             ForFetchingUser forFetchingUser,
-            ForSavingUserShow forSavingUserShow
+            ForSavingUserShow forSavingUserShow,
+            ForLoadingUserShows forLoadingUserShows
     ) {
         this.forLoadingShows = forLoadingShows;
         this.forFetchingUser = forFetchingUser;
         this.forSavingUserShow = forSavingUserShow;
-        this.forLoadingUserShows = null;
+        this.forLoadingUserShows = forLoadingUserShows;
     }
 
     @Override
@@ -82,7 +83,6 @@ public class UserShowService implements UpsertUserShow, FetchUserShows {
         LoadUserShowsResult result = forLoadingUserShows.load(userId);
         return switch (result) {
             case LoadUserShowsResult.Success(List<UserShow> userShows) -> new FetchUserShowsResult.Success(userShows);
-            case LoadUserShowsResult.UserNotFound _ -> new FetchUserShowsResult.UserNotFound();
             case LoadUserShowsResult.Failure _ -> new FetchUserShowsResult.Failure();
         };
     }

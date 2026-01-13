@@ -21,9 +21,9 @@ public class UserShowController {
     private final UpsertUserShow upsertUserShow;
     private final FetchUserShows fetchUserShows;
 
-    public UserShowController(UpsertUserShow upsertUserShow) {
+    public UserShowController(UpsertUserShow upsertUserShow, FetchUserShows fetchUserShows) {
         this.upsertUserShow = upsertUserShow;
-        this.fetchUserShows = (_) -> null;
+        this.fetchUserShows = fetchUserShows;
     }
 
     @PostMapping
