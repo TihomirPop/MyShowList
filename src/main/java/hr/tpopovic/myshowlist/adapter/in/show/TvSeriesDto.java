@@ -14,11 +14,12 @@ public final class TvSeriesDto extends ShowDto {
             String title,
             String description,
             Set<String> genres,
+            Double averageScore,
             Integer episodeCount,
             LocalDate startDate,
             LocalDate endDate
     ) {
-        super(id, title, description, genres);
+        super(id, title, description, genres, averageScore);
         this.episodeCount = episodeCount;
         this.startDate = startDate;
         this.endDate = endDate;

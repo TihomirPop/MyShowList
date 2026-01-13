@@ -20,7 +20,7 @@ public class ShowResponseMapper {
     private static ShowResponse success(FetchShowsResult.Success success) {
         List<ShowDto> shows = success.shows()
                 .stream()
-                .map(ShowDtoMapper::toDto)
+                .map(showDetails -> ShowDtoMapper.toDto(showDetails.show(), showDetails.averageScore()))
                 .toList();
 
         return new ShowResponse.Ok(shows);

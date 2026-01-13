@@ -5,6 +5,7 @@ import hr.tpopovic.myshowlist.application.port.in.*;
 import hr.tpopovic.myshowlist.application.port.out.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserShowService implements UpsertUserShow, FetchUserShows {
 
@@ -12,17 +13,19 @@ public class UserShowService implements UpsertUserShow, FetchUserShows {
     private final ForFetchingUser forFetchingUser;
     private final ForSavingUserShow forSavingUserShow;
     private final ForLoadingUserShows forLoadingUserShows;
+    private final ForFetchingScore forFetchingScore;
 
     public UserShowService(
             ForLoadingShows forLoadingShows,
             ForFetchingUser forFetchingUser,
             ForSavingUserShow forSavingUserShow,
-            ForLoadingUserShows forLoadingUserShows
+            ForLoadingUserShows forLoadingUserShows, ForFetchingScore forFetchingScore
     ) {
         this.forLoadingShows = forLoadingShows;
         this.forFetchingUser = forFetchingUser;
         this.forSavingUserShow = forSavingUserShow;
         this.forLoadingUserShows = forLoadingUserShows;
+        this.forFetchingScore = forFetchingScore;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class UserShowService implements UpsertUserShow, FetchUserShows {
     }
 
     private UpsertUserShowResult handleShowLoaded(Show show, UpsertUserShowCommand command) {
-        if(show.tooManyEpisodesWatched(command.progress())) {
+        if (show.tooManyEpisodesWatched(command.progress())) {
             return new UpsertUserShowResult.InvalidInput();
         }
 
@@ -82,9 +85,18 @@ public class UserShowService implements UpsertUserShow, FetchUserShows {
     private FetchUserShowsResult handleUserFound(UserId userId) {
         LoadUserShowsResult result = forLoadingUserShows.load(userId);
         return switch (result) {
-            case LoadUserShowsResult.Success(List<UserShow> userShows) -> new FetchUserShowsResult.Success(userShows);
+            case LoadUserShowsResult.Success(List<UserShow> userShows) -> handleUserShowsLoaded(userShows);
             case LoadUserShowsResult.Failure _ -> new FetchUserShowsResult.Failure();
         };
+    }
+
+    private FetchUserShowsResult handleUserShowsLoaded(List<UserShow> userShows) {
+        return userShows.stream()
+                .map(userShow -> new UserShowDetails(userShow, forFetchingScore.fetch(userShow.show().id())))
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toList(),
+                        FetchUserShowsResult.Success::new
+                ));
     }
 
 }

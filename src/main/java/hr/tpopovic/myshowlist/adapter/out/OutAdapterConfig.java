@@ -61,4 +61,9 @@ public class OutAdapterConfig {
         return new UserShowLoader(userShowRepository);
     }
 
+    @Bean
+    public ForFetchingScore forFetchingScore(UserShowRepository userShowRepository) {
+        return new ScoreFetcher(userShowRepository);
+    }
+
 }

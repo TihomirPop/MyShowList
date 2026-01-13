@@ -7,8 +7,8 @@ public final class MovieDto extends ShowDto {
 
     private final LocalDate releaseDate;
 
-    public MovieDto(String id, String title, String description, Set<String> genres, LocalDate releaseDate) {
-        super(id, title, description, genres);
+    public MovieDto(String id, String title, String description, Set<String> genres, Double averageScore, LocalDate releaseDate) {
+        super(id, title, description, genres, averageScore);
         this.releaseDate = releaseDate;
     }
 

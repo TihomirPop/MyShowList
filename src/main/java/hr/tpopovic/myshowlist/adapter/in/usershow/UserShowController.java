@@ -48,7 +48,7 @@ public class UserShowController {
         FetchUserShowsResult result = fetchUserShows.fetch(username);
 
         return switch (result) {
-            case FetchUserShowsResult.Success(List<UserShow> shows) -> mapUserShows(shows);
+            case FetchUserShowsResult.Success(List<UserShowDetails> shows) -> mapUserShows(shows);
             case FetchUserShowsResult.UserNotFound _ -> ResponseEntity.notFound().build();
             case FetchUserShowsResult.Failure _ -> ResponseEntity.internalServerError().build();
         };
@@ -95,13 +95,13 @@ public class UserShowController {
         return new Score.Rated(score);
     }
 
-    private ResponseEntity<GetUserShowsResponse> mapUserShows(List<UserShow> shows) {
+    private ResponseEntity<GetUserShowsResponse> mapUserShows(List<UserShowDetails> shows) {
         List<UserShowDto> dtos = shows.stream()
-                .map(userShow -> new UserShowDto(
-                        ShowDtoMapper.toDto(userShow.show()),
-                        userShow.progress().value(),
-                        mapStatus(userShow.status()),
-                        mapScore(userShow.score())
+                .map(userShowDetails -> new UserShowDto(
+                        ShowDtoMapper.toDto(userShowDetails.userShow().show(), userShowDetails.averageScore()),
+                        userShowDetails.userShow().progress().value(),
+                        mapStatus(userShowDetails.userShow().status()),
+                        mapScore(userShowDetails.userShow().score())
                 ))
                 .toList();
 

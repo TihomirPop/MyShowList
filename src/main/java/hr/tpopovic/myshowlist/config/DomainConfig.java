@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class DomainConfig {
 
     @Bean
-    public FetchShows fetchShows(ForLoadingShows forLoadingShows) {
-        return new ShowService(forLoadingShows);
+    public FetchShows fetchShows(ForLoadingShows forLoadingShows, ForFetchingScore forFetchingScore) {
+        return new ShowService(forLoadingShows, forFetchingScore);
     }
 
     @Bean
@@ -42,8 +42,9 @@ public class DomainConfig {
             ForLoadingShows forLoadingShows,
             ForFetchingUser forFetchingUser,
             ForSavingUserShow forSavingUserShow,
-            ForLoadingUserShows forLoadingUserShows
+            ForLoadingUserShows forLoadingUserShows,
+            ForFetchingScore forFetchingScore
     ) {
-        return new UserShowService(forLoadingShows, forFetchingUser, forSavingUserShow, forLoadingUserShows);
+        return new UserShowService(forLoadingShows, forFetchingUser, forSavingUserShow, forLoadingUserShows, forFetchingScore);
     }
 }
