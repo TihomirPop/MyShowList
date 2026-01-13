@@ -1,16 +1,17 @@
 package hr.tpopovic.myshowlist.application.domain.service;
 
 import hr.tpopovic.myshowlist.application.domain.model.*;
-import hr.tpopovic.myshowlist.application.port.in.UpsertUserShow;
-import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowCommand;
-import hr.tpopovic.myshowlist.application.port.in.UpsertUserShowResult;
+import hr.tpopovic.myshowlist.application.port.in.*;
 import hr.tpopovic.myshowlist.application.port.out.*;
 
-public class UserShowService implements UpsertUserShow {
+import java.util.List;
+
+public class UserShowService implements UpsertUserShow, FetchUserShows {
 
     private final ForLoadingShows forLoadingShows;
     private final ForFetchingUser forFetchingUser;
     private final ForSavingUserShow forSavingUserShow;
+    private final ForLoadingUserShows forLoadingUserShows;
 
     public UserShowService(
             ForLoadingShows forLoadingShows,
@@ -20,6 +21,7 @@ public class UserShowService implements UpsertUserShow {
         this.forLoadingShows = forLoadingShows;
         this.forFetchingUser = forFetchingUser;
         this.forSavingUserShow = forSavingUserShow;
+        this.forLoadingUserShows = null;
     }
 
     @Override
@@ -62,6 +64,26 @@ public class UserShowService implements UpsertUserShow {
             case SaveUserShowResult.Success _ -> new UpsertUserShowResult.Success();
             case SaveUserShowResult.ShowNotFound _ -> new UpsertUserShowResult.ShowNotFound();
             case SaveUserShowResult.Failure _ -> new UpsertUserShowResult.Failure();
+        };
+    }
+
+    @Override
+    public FetchUserShowsResult fetch(Username username) {
+        FetchUserIdResult userResult = forFetchingUser.fetch(username);
+
+        return switch (userResult) {
+            case FetchUserIdResult.Success(UserId userId) -> handleUserFound(userId);
+            case FetchUserIdResult.UserNotFound _ -> new FetchUserShowsResult.UserNotFound();
+            case FetchUserIdResult.Failure _ -> new FetchUserShowsResult.Failure();
+        };
+    }
+
+    private FetchUserShowsResult handleUserFound(UserId userId) {
+        LoadUserShowsResult result = forLoadingUserShows.load(userId);
+        return switch (result) {
+            case LoadUserShowsResult.Success(List<UserShow> userShows) -> new FetchUserShowsResult.Success(userShows);
+            case LoadUserShowsResult.UserNotFound _ -> new FetchUserShowsResult.UserNotFound();
+            case LoadUserShowsResult.Failure _ -> new FetchUserShowsResult.Failure();
         };
     }
 
