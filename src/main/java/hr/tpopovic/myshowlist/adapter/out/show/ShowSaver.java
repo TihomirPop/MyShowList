@@ -8,6 +8,7 @@ import hr.tpopovic.myshowlist.application.port.out.ForSavingShow;
 import hr.tpopovic.myshowlist.application.port.out.SaveShowCommand;
 import hr.tpopovic.myshowlist.application.port.out.SaveShowResult;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -67,7 +68,7 @@ public class ShowSaver implements ForSavingShow {
                 .collect(Collectors.toSet());
 
         List<GenreEntity> entities = genreRepository.findByNameIn(genreNames);
-        return Set.copyOf(entities);
+        return new HashSet<>(entities);
     }
 
 }

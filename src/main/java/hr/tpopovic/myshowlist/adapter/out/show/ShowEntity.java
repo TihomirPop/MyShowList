@@ -11,7 +11,6 @@ import java.util.UUID;
 public abstract class ShowEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", nullable = false)
     private UUID id;
 
