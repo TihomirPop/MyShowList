@@ -66,4 +66,24 @@ public class OutAdapterConfig {
         return new ScoreFetcher(userShowRepository);
     }
 
+    @Bean
+    public ForSavingReview forSavingReview(ReviewRepository reviewRepository) {
+        return new ReviewSaver(reviewRepository);
+    }
+
+    @Bean
+    public ForLoadingReviews forLoadingReviews(ReviewRepository reviewRepository) {
+        return new ReviewsLoader(reviewRepository);
+    }
+
+    @Bean
+    public ForDeletingReview forDeletingReview(ReviewRepository reviewRepository) {
+        return new ReviewDeleter(reviewRepository);
+    }
+
+    @Bean
+    public ForLoadingUsers forLoadingUsers(UserRepository userRepository) {
+        return new UserLoader(userRepository);
+    }
+
 }

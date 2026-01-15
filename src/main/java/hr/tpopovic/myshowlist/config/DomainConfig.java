@@ -1,6 +1,7 @@
 package hr.tpopovic.myshowlist.config;
 
 import hr.tpopovic.myshowlist.application.domain.service.AuthService;
+import hr.tpopovic.myshowlist.application.domain.service.ReviewService;
 import hr.tpopovic.myshowlist.application.domain.service.ShowService;
 import hr.tpopovic.myshowlist.application.domain.service.UserShowService;
 import hr.tpopovic.myshowlist.application.port.in.FetchShows;
@@ -46,5 +47,24 @@ public class DomainConfig {
             ForFetchingScore forFetchingScore
     ) {
         return new UserShowService(forLoadingShows, forFetchingUser, forSavingUserShow, forLoadingUserShows, forFetchingScore);
+    }
+
+    @Bean
+    public ReviewService reviewService(
+            ForLoadingShows forLoadingShows,
+            ForFetchingUser forFetchingUser,
+            ForSavingReview forSavingReview,
+            ForLoadingReviews forLoadingReviews,
+            ForDeletingReview forDeletingReview,
+            ForLoadingUsers forLoadingUsers
+    ) {
+        return new ReviewService(
+                forLoadingShows,
+                forFetchingUser,
+                forSavingReview,
+                forLoadingReviews,
+                forDeletingReview,
+                forLoadingUsers
+        );
     }
 }
