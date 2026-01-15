@@ -8,6 +8,7 @@ import hr.tpopovic.myshowlist.application.port.out.ForUpdatingShow;
 import hr.tpopovic.myshowlist.application.port.out.UpdateShowPortCommand;
 import hr.tpopovic.myshowlist.application.port.out.UpdateShowPortResult;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -63,9 +64,7 @@ public class ShowUpdater implements ForUpdatingShow {
         entity.setGenres(genreEntities);
 
         switch (show) {
-            case Movie movie when entity instanceof MovieEntity movieEntity -> {
-                movieEntity.setReleaseDate(movie.releaseDate());
-            }
+            case Movie movie when entity instanceof MovieEntity movieEntity -> movieEntity.setReleaseDate(movie.releaseDate());
             case TvSeries tvSeries when entity instanceof TvSeriesEntity tvSeriesEntity -> {
                 tvSeriesEntity.setEpisodeCount(tvSeries.episodeCount().count());
                 tvSeriesEntity.setStartedDate(tvSeries.airingPeriod().from());
@@ -81,7 +80,7 @@ public class ShowUpdater implements ForUpdatingShow {
                 .collect(Collectors.toSet());
 
         List<GenreEntity> entities = genreRepository.findByNameIn(genreNames);
-        return Set.copyOf(entities);
+        return new HashSet<>(entities);
     }
 
 }
