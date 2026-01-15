@@ -21,6 +21,7 @@ public class UserSaver implements ForSavingUser {
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(user.username().value());
         userEntity.setPasswordHash(user.hashedPassword().value());
+        userEntity.setRole(user.role());
         return save(userEntity);
     }
 

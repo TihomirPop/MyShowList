@@ -1,5 +1,6 @@
 package hr.tpopovic.myshowlist.adapter.out;
 
+import hr.tpopovic.myshowlist.application.domain.model.Role;
 import jakarta.persistence.*;
 
 import java.util.LinkedHashSet;
@@ -19,6 +20,10 @@ public class UserEntity {
 
     @Column(name = "password_hash", nullable = false, length = 60)
     private String passwordHash;
+
+    @Column(name = "role", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     private Set<UserShowEntity> userShows = new LinkedHashSet<>();
@@ -53,5 +58,13 @@ public class UserEntity {
 
     public void setUserShows(Set<UserShowEntity> userShows) {
         this.userShows = userShows;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
