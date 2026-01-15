@@ -1,5 +1,6 @@
 package hr.tpopovic.myshowlist.adapter.in.auth;
 
+import hr.tpopovic.myshowlist.application.domain.model.Role;
 import hr.tpopovic.myshowlist.application.domain.model.Token;
 import hr.tpopovic.myshowlist.application.domain.model.Username;
 import hr.tpopovic.myshowlist.application.port.in.ValidateToken;
@@ -9,13 +10,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -45,7 +48,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         ValidateTokenResult result = validateToken.validate(new Token(token));
 
         switch (result) {
-            case ValidateTokenResult.Valid(Username username) -> setAuthenticationContext(username, request);
+            case ValidateTokenResult.Valid(Username username, Role role) ->
+                setAuthenticationContext(username, role, request);
             case ValidateTokenResult.Invalid _, ValidateTokenResult.Failure _ -> {
                 // noop
             }
@@ -54,9 +58,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void setAuthenticationContext(Username username, HttpServletRequest request) {
-        User principal = new User(username.value(), "", Collections.emptyList());
-        var auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+    private void setAuthenticationContext(Username username, Role role, HttpServletRequest request) {
+        List<GrantedAuthority> authorities = List.of(
+            new SimpleGrantedAuthority(role.toAuthority())
+        );
+
+        User principal = new User(username.value(), "", authorities);
+        var auth = new UsernamePasswordAuthenticationToken(principal, null, authorities);
         auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
