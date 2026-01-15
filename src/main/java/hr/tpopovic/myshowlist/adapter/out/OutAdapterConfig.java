@@ -1,7 +1,6 @@
 package hr.tpopovic.myshowlist.adapter.out;
 
-import hr.tpopovic.myshowlist.adapter.out.show.ShowLoader;
-import hr.tpopovic.myshowlist.adapter.out.show.ShowRepository;
+import hr.tpopovic.myshowlist.adapter.out.show.*;
 import hr.tpopovic.myshowlist.application.port.out.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +13,26 @@ public class OutAdapterConfig {
     @Bean
     public ForLoadingShows forLoadingShows(ShowRepository showRepository) {
         return new ShowLoader(showRepository);
+    }
+
+    @Bean
+    public ForLoadingGenres forLoadingGenres(GenreRepository genreRepository) {
+        return new GenreLoader(genreRepository);
+    }
+
+    @Bean
+    public ForSavingShow forSavingShow(ShowRepository showRepository, GenreRepository genreRepository) {
+        return new ShowSaver(showRepository, genreRepository);
+    }
+
+    @Bean
+    public ForUpdatingShow forUpdatingShow(ShowRepository showRepository, GenreRepository genreRepository) {
+        return new ShowUpdater(showRepository, genreRepository);
+    }
+
+    @Bean
+    public ForDeletingShow forDeletingShow(ShowRepository showRepository) {
+        return new ShowDeleter(showRepository);
     }
 
     @Bean
