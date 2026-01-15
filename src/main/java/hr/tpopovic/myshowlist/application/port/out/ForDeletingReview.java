@@ -5,5 +5,5 @@ import hr.tpopovic.myshowlist.application.domain.model.UserId;
 
 public interface ForDeletingReview {
 
-    DeleteReviewResult delete(UserId userId, ShowId showId);
+    ReviewDeletionResult delete(UserId userId, ShowId showId);
 }
