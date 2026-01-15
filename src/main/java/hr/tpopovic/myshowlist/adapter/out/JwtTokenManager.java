@@ -3,10 +3,10 @@ package hr.tpopovic.myshowlist.adapter.out;
 import hr.tpopovic.myshowlist.application.domain.model.Role;
 import hr.tpopovic.myshowlist.application.domain.model.Token;
 import hr.tpopovic.myshowlist.application.domain.model.Username;
-import hr.tpopovic.myshowlist.application.port.out.ForExtractingUsernameFromToken;
+ import hr.tpopovic.myshowlist.application.port.out.ForExtractingUserDetailsFromToken;
 import hr.tpopovic.myshowlist.application.port.out.ForGeneratingToken;
 import hr.tpopovic.myshowlist.application.port.out.ForValidatingToken;
-import hr.tpopovic.myshowlist.application.port.out.UsernameFromTokenExtractionResult;
+import hr.tpopovic.myshowlist.application.port.out.UserDetailsFromTokenExtractionResult;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
 
-public class JwtTokenManager implements ForGeneratingToken, ForValidatingToken, ForExtractingUsernameFromToken {
+public class JwtTokenManager implements ForGeneratingToken, ForValidatingToken, ForExtractingUserDetailsFromToken {
 
     private final SecretKey secretKey;
     private final Duration expiration;
@@ -53,18 +53,24 @@ public class JwtTokenManager implements ForGeneratingToken, ForValidatingToken, 
     }
 
     @Override
-    public UsernameFromTokenExtractionResult extract(Token token) {
+    public UserDetailsFromTokenExtractionResult extract(Token token) {
         try {
-            String username = Jwts.parser()
+            var claims = Jwts.parser()
                     .verifyWith(secretKey)
                     .build()
                     .parseSignedClaims(token.value())
-                    .getPayload()
-                    .getSubject();
+                    .getPayload();
 
-            return new UsernameFromTokenExtractionResult.Success(new Username(username));
+            String username = claims.getSubject();
+            String roleStr = claims.get("role", String.class);
+            Role role = Role.valueOf(roleStr);
+
+            return new UserDetailsFromTokenExtractionResult.Success(
+                new Username(username),
+                role
+            );
         } catch (JwtException | IllegalArgumentException e) {
-            return new UsernameFromTokenExtractionResult.Failure();
+            return new UserDetailsFromTokenExtractionResult.Failure();
         }
     }
 
