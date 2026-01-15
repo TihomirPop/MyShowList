@@ -37,6 +37,11 @@ public class OutAdapterConfig {
     }
 
     @Bean
+    public ForFetchingUserWithRole forFetchingUserWithRole(UserRepository userRepository) {
+        return new UserWithRoleFetcher(userRepository);
+    }
+
+    @Bean
     public ForCheckingPassword forCheckingPassword(PasswordEncoder passwordEncoder) {
         return new PasswordChecker(passwordEncoder);
     }

@@ -22,19 +22,21 @@ public class DomainConfig {
             ForHashingPassword forHashingPassword,
             ForSavingUser forSavingUser,
             ForFetchingPasswordHash forFetchingPasswordHash,
+            ForFetchingUserWithRole forFetchingUserWithRole,
             ForCheckingPassword forCheckingPassword,
             ForGeneratingToken forGeneratingToken,
             ForValidatingToken forValidatingToken,
-            ForExtractingUsernameFromToken forExtractingUsernameFromToken
+            ForExtractingUserDetailsFromToken forExtractingUserDetailsFromToken
     ) {
         return new AuthService(
                 forHashingPassword,
                 forSavingUser,
                 forFetchingPasswordHash,
+                forFetchingUserWithRole,
                 forCheckingPassword,
                 forGeneratingToken,
                 forValidatingToken,
-                forExtractingUsernameFromToken
+                forExtractingUserDetailsFromToken
         );
     }
 
