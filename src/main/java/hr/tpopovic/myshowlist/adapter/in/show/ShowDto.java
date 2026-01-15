@@ -1,7 +1,19 @@
 package hr.tpopovic.myshowlist.adapter.in.show;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Set;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = MovieDto.class, name = "MOVIE"),
+        @JsonSubTypes.Type(value = TvSeriesDto.class, name = "TV_SERIES")
+})
 public abstract sealed class ShowDto permits MovieDto, TvSeriesDto {
 
     private final String id;
