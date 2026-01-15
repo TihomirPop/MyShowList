@@ -2,7 +2,7 @@ package hr.tpopovic.myshowlist.adapter.out.show;
 
 import hr.tpopovic.myshowlist.application.domain.model.Genre;
 import hr.tpopovic.myshowlist.application.port.out.ForLoadingGenres;
-import hr.tpopovic.myshowlist.application.port.out.LoadGenresResult;
+import hr.tpopovic.myshowlist.application.port.out.ValidateGenresResult;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,8 +18,12 @@ public class GenreLoader implements ForLoadingGenres {
     }
 
     @Override
-    public LoadGenresResult loadByNames(Set<String> genreNames) {
+    public ValidateGenresResult validate(Set<Genre> genres) {
         try {
+            Set<String> genreNames = genres.stream()
+                    .map(Genre::name)
+                    .collect(Collectors.toSet());
+
             List<GenreEntity> foundEntities = genreRepository.findByNameIn(genreNames);
 
             Set<Genre> foundGenres = foundEntities.stream()
@@ -33,9 +37,9 @@ public class GenreLoader implements ForLoadingGenres {
             Set<String> missingGenres = new HashSet<>(genreNames);
             missingGenres.removeAll(foundNames);
 
-            return new LoadGenresResult.Success(foundGenres, missingGenres);
+            return new ValidateGenresResult.Success(foundGenres, missingGenres);
         } catch (Exception e) {
-            return new LoadGenresResult.Failure("Failed to load genres: " + e.getMessage());
+            return new ValidateGenresResult.Failure("Failed to load genres: " + e.getMessage());
         }
     }
 
