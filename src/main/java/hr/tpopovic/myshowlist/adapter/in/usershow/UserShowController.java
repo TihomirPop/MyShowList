@@ -15,7 +15,7 @@ import java.util.UUID;
 import static java.util.Objects.isNull;
 
 @RestController
-@RequestMapping("${service.api.root-path}${service.api.user-show.path}")
+@RequestMapping("${service.api.user-show.path}")
 public class UserShowController {
 
     private final UpsertUserShow upsertUserShow;

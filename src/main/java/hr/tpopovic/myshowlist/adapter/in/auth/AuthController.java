@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("${service.api.root-path}")
+@RequestMapping
 public class AuthController {
 
     private final RegisterUser registerUser;

@@ -6,13 +6,15 @@ service:
   api:
     root-path: /api/v1
     show:
-      path: /shows
+      path: ${service.api.root-path}/shows
     register:
-      path: /register
+      path: ${service.api.root-path}/register
     login:
-      path: /login
+      path: ${service.api.root-path}/login
     user-show:
-      path: /user-shows
+      path: ${service.api.root-path}/user-shows
+    review:
+      path: ${service.api.show.path}/{showId}/reviews
   jwt:
     base64-secret: ${JWT_SECRET}
     expiration: 1h

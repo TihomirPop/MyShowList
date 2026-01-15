@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("${service.api.root-path}${service.api.show.path}")
+@RequestMapping("${service.api.show.path}")
 public class ShowController {
 
     private final FetchShows fetchShows;
