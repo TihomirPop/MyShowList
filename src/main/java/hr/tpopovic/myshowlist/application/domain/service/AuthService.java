@@ -9,33 +9,36 @@ public class AuthService implements RegisterUser, LoginUser, ValidateToken {
     private final ForHashingPassword forHashingPassword;
     private final ForSavingUser forSavingUser;
     private final ForFetchingPasswordHash forFetchingPasswordHash;
+    private final ForFetchingUserWithRole forFetchingUserWithRole;
     private final ForCheckingPassword forCheckingPassword;
     private final ForGeneratingToken forGeneratingToken;
     private final ForValidatingToken forValidatingToken;
-    private final ForExtractingUsernameFromToken forExtractingUsernameFromToken;
+    private final ForExtractingUserDetailsFromToken forExtractingUserDetailsFromToken;
 
     public AuthService(
             ForHashingPassword forHashingPassword,
             ForSavingUser forSavingUser,
             ForFetchingPasswordHash forFetchingPasswordHash,
+            ForFetchingUserWithRole forFetchingUserWithRole,
             ForCheckingPassword forCheckingPassword,
             ForGeneratingToken forGeneratingToken,
             ForValidatingToken forValidatingToken,
-            ForExtractingUsernameFromToken forExtractingUsernameFromToken
+            ForExtractingUserDetailsFromToken forExtractingUserDetailsFromToken
     ) {
         this.forHashingPassword = forHashingPassword;
         this.forSavingUser = forSavingUser;
         this.forFetchingPasswordHash = forFetchingPasswordHash;
+        this.forFetchingUserWithRole = forFetchingUserWithRole;
         this.forCheckingPassword = forCheckingPassword;
         this.forGeneratingToken = forGeneratingToken;
         this.forValidatingToken = forValidatingToken;
-        this.forExtractingUsernameFromToken = forExtractingUsernameFromToken;
+        this.forExtractingUserDetailsFromToken = forExtractingUserDetailsFromToken;
     }
 
     @Override
     public RegisterUserResult register(RegisterCommand command) {
         HashedPassword hashedPassword = forHashingPassword.hash(command.password());
-        User user = new User(command.username(), hashedPassword);
+        User user = new User(command.username(), hashedPassword, Role.USER);
         SavingUserResult result = forSavingUser.save(user);
 
         return switch (result) {
@@ -48,10 +51,17 @@ public class AuthService implements RegisterUser, LoginUser, ValidateToken {
     public LoginResult login(LoginCommand command) {
         Username username = command.username();
         Password password = command.password();
+
         FetchPasswordHashResult fetchPasswordHashResult = forFetchingPasswordHash.fetch(username);
+        FetchUserWithRoleResult fetchRoleResult = forFetchingUserWithRole.fetch(username);
 
         return switch (fetchPasswordHashResult) {
-            case FetchPasswordHashResult.Success(HashedPassword hashedPassword) -> checkPasswordAndGenerateToken(username, password, hashedPassword);
+            case FetchPasswordHashResult.Success(HashedPassword hashedPassword) -> switch (fetchRoleResult) {
+                case FetchUserWithRoleResult.Success(UserId _, Role role) ->
+                    checkPasswordAndGenerateToken(username, password, hashedPassword, role);
+                case FetchUserWithRoleResult.UserNotFound _ -> new LoginResult.WrongCredentials();
+                case FetchUserWithRoleResult.Failure _ -> new LoginResult.Failure();
+            };
             case FetchPasswordHashResult.NotFound _ -> new LoginResult.WrongCredentials();
             case FetchPasswordHashResult.Failure _ -> new LoginResult.Failure();
         };
@@ -64,18 +74,20 @@ public class AuthService implements RegisterUser, LoginUser, ValidateToken {
             return new ValidateTokenResult.Invalid();
         }
 
-        UsernameFromTokenExtractionResult result = forExtractingUsernameFromToken.extract(token);
+        UserDetailsFromTokenExtractionResult result = forExtractingUserDetailsFromToken.extract(token);
 
         return switch (result) {
-            case UsernameFromTokenExtractionResult.Success(Username username) -> new ValidateTokenResult.Valid(username);
-            case UsernameFromTokenExtractionResult.Failure _ -> new ValidateTokenResult.Failure();
+            case UserDetailsFromTokenExtractionResult.Success(Username username, Role role) ->
+                new ValidateTokenResult.Valid(username, role);
+            case UserDetailsFromTokenExtractionResult.Failure _ -> new ValidateTokenResult.Failure();
         };
     }
 
     private LoginResult checkPasswordAndGenerateToken(
             Username username,
             Password password,
-            HashedPassword hashedPassword
+            HashedPassword hashedPassword,
+            Role role
     ) {
         boolean passwordMatches = forCheckingPassword.check(password, hashedPassword);
 
@@ -83,7 +95,7 @@ public class AuthService implements RegisterUser, LoginUser, ValidateToken {
             return new LoginResult.WrongCredentials();
         }
 
-        Token token = forGeneratingToken.generate(username);
+        Token token = forGeneratingToken.generate(username, role);
 
         return new LoginResult.Success(token);
     }
