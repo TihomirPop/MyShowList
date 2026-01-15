@@ -1,5 +1,6 @@
 package hr.tpopovic.myshowlist.adapter.out;
 
+import hr.tpopovic.myshowlist.application.domain.model.Role;
 import hr.tpopovic.myshowlist.application.domain.model.Token;
 import hr.tpopovic.myshowlist.application.domain.model.Username;
 import hr.tpopovic.myshowlist.application.port.out.ForExtractingUsernameFromToken;
@@ -26,9 +27,10 @@ public class JwtTokenManager implements ForGeneratingToken, ForValidatingToken, 
     }
 
     @Override
-    public Token generate(Username username) {
+    public Token generate(Username username, Role role) {
         String token = Jwts.builder()
                 .subject(username.value())
+                .claim("role", role.name())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expiration.toMillis()))
                 .signWith(secretKey)
