@@ -6,6 +6,7 @@ import hr.tpopovic.myshowlist.application.domain.service.ShowService;
 import hr.tpopovic.myshowlist.application.domain.service.UserShowService;
 import hr.tpopovic.myshowlist.application.port.in.CreateShow;
 import hr.tpopovic.myshowlist.application.port.in.DeleteShow;
+import hr.tpopovic.myshowlist.application.port.in.FetchShow;
 import hr.tpopovic.myshowlist.application.port.in.FetchShows;
 import hr.tpopovic.myshowlist.application.port.in.UpdateShow;
 import hr.tpopovic.myshowlist.application.port.out.*;
@@ -36,6 +37,11 @@ public class DomainConfig {
 
     @Bean
     public FetchShows fetchShows(ShowService showService) {
+        return showService;
+    }
+
+    @Bean
+    public FetchShow fetchShow(ShowService showService) {
         return showService;
     }
 
