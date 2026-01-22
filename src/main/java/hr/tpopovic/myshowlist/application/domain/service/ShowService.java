@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class ShowService implements FetchShows, CreateShow, UpdateShow, DeleteShow {
+public class ShowService implements FetchShows, FetchShow, CreateShow, UpdateShow, DeleteShow {
 
     private final ForLoadingShows forLoadingShows;
     private final ForFetchingScore forFetchingScore;
@@ -53,6 +53,21 @@ public class ShowService implements FetchShows, CreateShow, UpdateShow, DeleteSh
                         Collectors.toList(),
                         FetchShowsResult.Success::new
                 ));
+    }
+
+    @Override
+    public FetchShowResult fetchShow(ShowId showId) {
+        LoadShowResult result = forLoadingShows.load(showId);
+
+        return switch (result) {
+            case LoadShowResult.Success(Show show) -> {
+                AverageScore averageScore = forFetchingScore.fetch(show.id());
+                ShowDetails showDetails = new ShowDetails(show, averageScore);
+                yield new FetchShowResult.Success(showDetails);
+            }
+            case LoadShowResult.NotFound _ -> new FetchShowResult.NotFound();
+            case LoadShowResult.Failure _ -> new FetchShowResult.Failure();
+        };
     }
 
     @Override
