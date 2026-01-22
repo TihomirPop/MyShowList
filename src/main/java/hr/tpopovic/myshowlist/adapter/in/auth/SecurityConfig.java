@@ -47,8 +47,20 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Public auth endpoints
                         .requestMatchers("/api/v1/login", "/api/v1/register").permitAll()
-                        .anyRequest().authenticated()
+                        // Protect API endpoints
+                        .requestMatchers("/api/v1/**").authenticated()
+                        // Allow static resources for SPA
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/robots.txt",
+                                "/_app/**",
+                                "/favicon.svg"
+                        ).permitAll()
+                        // Allow SPA routes (for client-side routing)
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
