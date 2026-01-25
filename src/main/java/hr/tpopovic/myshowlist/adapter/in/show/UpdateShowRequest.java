@@ -20,15 +20,17 @@ public abstract sealed class UpdateShowRequest permits UpdateMovieRequest, Updat
     private String title;
     private String description;
     private Set<String> genres;
+    private String thumbnailUrl;
 
     protected UpdateShowRequest() {
     }
 
-    protected UpdateShowRequest(String id, String title, String description, Set<String> genres) {
+    protected UpdateShowRequest(String id, String title, String description, Set<String> genres, String thumbnailUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.genres = genres;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getId() {
@@ -61,6 +63,14 @@ public abstract sealed class UpdateShowRequest permits UpdateMovieRequest, Updat
 
     public void setGenres(Set<String> genres) {
         this.genres = genres;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
 }

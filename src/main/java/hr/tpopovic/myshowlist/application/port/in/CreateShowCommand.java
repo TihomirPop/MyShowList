@@ -13,10 +13,13 @@ public sealed interface CreateShowCommand {
 
     Set<Genre> genres();
 
+    ThumbnailUrl thumbnailUrl();
+
     record CreateMovie(
             Title title,
             Description description,
             Set<Genre> genres,
+            ThumbnailUrl thumbnailUrl,
             LocalDate releaseDate
     ) implements CreateShowCommand {
     }
@@ -25,6 +28,7 @@ public sealed interface CreateShowCommand {
             Title title,
             Description description,
             Set<Genre> genres,
+            ThumbnailUrl thumbnailUrl,
             EpisodeCount episodeCount,
             DateRange airingPeriod
     ) implements CreateShowCommand {

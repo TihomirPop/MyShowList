@@ -24,6 +24,7 @@ class ShowEntityMapperTest {
         movieEntity.setTitle("Inception");
         movieEntity.setDescription("A mind-bending thriller");
         movieEntity.setGenres(Set.of());
+        movieEntity.setThumbnailUrl("https://example.com/inception.png");
         movieEntity.setReleaseDate(LocalDate.of(2010, 7, 16));
 
         // when
@@ -37,12 +38,14 @@ class ShowEntityMapperTest {
                         Movie::id,
                         Movie::title,
                         Movie::description,
+                        Movie::thumbnailUrl,
                         Movie::releaseDate
                 )
                 .containsExactly(
                         new ShowId(UUID.fromString(id.toString())),
                         new Title("Inception"),
                         new Description("A mind-bending thriller"),
+                        new ThumbnailUrl("https://example.com/inception.png"),
                         LocalDate.of(2010, 7, 16)
                 );
     }
@@ -56,6 +59,7 @@ class ShowEntityMapperTest {
         tvSeriesEntity.setTitle("Breaking Bad");
         tvSeriesEntity.setDescription("A high school chemistry teacher turned methamphetamine producer.");
         tvSeriesEntity.setGenres(Set.of());
+        tvSeriesEntity.setThumbnailUrl("https://example.com/breaking-bad.png");
         tvSeriesEntity.setEpisodeCount(62);
         tvSeriesEntity.setStartedDate(LocalDate.of(2008, 1, 20));
         tvSeriesEntity.setEndedDate(LocalDate.of(2013, 9, 29));
@@ -71,6 +75,7 @@ class ShowEntityMapperTest {
                         TvSeries::id,
                         TvSeries::title,
                         TvSeries::description,
+                        TvSeries::thumbnailUrl,
                         TvSeries::episodeCount,
                         TvSeries::airingPeriod
                 )
@@ -78,6 +83,7 @@ class ShowEntityMapperTest {
                         new ShowId(UUID.fromString(id.toString())),
                         new Title("Breaking Bad"),
                         new Description("A high school chemistry teacher turned methamphetamine producer."),
+                        new ThumbnailUrl("https://example.com/breaking-bad.png"),
                         new EpisodeCount(62),
                         DateRange.from(LocalDate.of(2008, 1, 20))
                                 .to(LocalDate.of(2013, 9, 29))

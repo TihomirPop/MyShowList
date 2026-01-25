@@ -21,13 +21,15 @@ public abstract sealed class ShowDto permits MovieDto, TvSeriesDto {
     private final String description;
     private final Set<String> genres;
     private final Double averageScore;
+    private final String thumbnailUrl;
 
-    protected ShowDto(String id, String title, String description, Set<String> genres, Double averageScore) {
+    protected ShowDto(String id, String title, String description, Set<String> genres, Double averageScore, String thumbnailUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.genres = genres;
         this.averageScore = averageScore;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getId() {
@@ -48,6 +50,10 @@ public abstract sealed class ShowDto permits MovieDto, TvSeriesDto {
 
     public Double getAverageScore() {
         return averageScore;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
 }

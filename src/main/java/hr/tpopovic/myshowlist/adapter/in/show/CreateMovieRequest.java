@@ -10,8 +10,8 @@ public final class CreateMovieRequest extends CreateShowRequest {
     public CreateMovieRequest() {
     }
 
-    public CreateMovieRequest(String title, String description, Set<String> genres, LocalDate releaseDate) {
-        super(title, description, genres);
+    public CreateMovieRequest(String title, String description, Set<String> genres, String thumbnailUrl, LocalDate releaseDate) {
+        super(title, description, genres, thumbnailUrl);
         this.releaseDate = releaseDate;
     }
 

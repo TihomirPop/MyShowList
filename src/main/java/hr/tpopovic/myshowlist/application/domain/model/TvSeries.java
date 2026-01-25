@@ -14,6 +14,7 @@ public final class TvSeries extends Show {
             Title title,
             Description description,
             Set<Genre> genres,
+            ThumbnailUrl thumbnailUrl,
             EpisodeCount episodeCount,
             DateRange airingPeriod
     ) {
@@ -21,10 +22,11 @@ public final class TvSeries extends Show {
         requireNonNull(title, "title");
         requireNonNull(description, "description");
         requireNonNull(genres, "genres");
+        requireNonNull(thumbnailUrl, "thumbnailUrl");
         requireNonNull(episodeCount, "episodeCount");
         requireNonNull(airingPeriod, "airingPeriod");
 
-        super(id, title, description, Set.copyOf(genres));
+        super(id, title, description, Set.copyOf(genres), thumbnailUrl);
         this.episodeCount = episodeCount;
         this.airingPeriod = airingPeriod;
     }

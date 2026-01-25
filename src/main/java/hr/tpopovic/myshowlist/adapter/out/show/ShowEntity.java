@@ -28,6 +28,9 @@ public abstract class ShowEntity {
     )
     private Set<GenreEntity> genres;
 
+    @Column(name = "thumbnail_url", nullable = false, length = 2048)
+    private String thumbnailUrl;
+
     public UUID getId() {
         return id;
     }
@@ -58,6 +61,14 @@ public abstract class ShowEntity {
 
     public void setGenres(Set<GenreEntity> genres) {
         this.genres = genres;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
 }

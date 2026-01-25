@@ -25,6 +25,7 @@ public class ShowDtoMapper {
                 movie.description().text(),
                 getGenres(movie),
                 averageScore.score(),
+                movie.thumbnailUrl().url(),
                 movie.releaseDate()
         );
     }
@@ -36,6 +37,7 @@ public class ShowDtoMapper {
                 tvSeries.description().text(),
                 getGenres(tvSeries),
                 averageScore.score(),
+                tvSeries.thumbnailUrl().url(),
                 tvSeries.episodeCount().count(),
                 tvSeries.airingPeriod().from(),
                 tvSeries.airingPeriod().to()

@@ -12,9 +12,9 @@ public final class CreateTvSeriesRequest extends CreateShowRequest {
     public CreateTvSeriesRequest() {
     }
 
-    public CreateTvSeriesRequest(String title, String description, Set<String> genres,
+    public CreateTvSeriesRequest(String title, String description, Set<String> genres, String thumbnailUrl,
                                  Integer episodeCount, LocalDate startDate, LocalDate endDate) {
-        super(title, description, genres);
+        super(title, description, genres, thumbnailUrl);
         this.episodeCount = episodeCount;
         this.startDate = startDate;
         this.endDate = endDate;

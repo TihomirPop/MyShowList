@@ -62,6 +62,7 @@ public class ShowUpdater implements ForUpdatingShow {
         entity.setTitle(show.title().name());
         entity.setDescription(show.description().text());
         entity.setGenres(genreEntities);
+        entity.setThumbnailUrl(show.thumbnailUrl().url());
 
         switch (show) {
             case Movie movie when entity instanceof MovieEntity movieEntity -> movieEntity.setReleaseDate(movie.releaseDate());

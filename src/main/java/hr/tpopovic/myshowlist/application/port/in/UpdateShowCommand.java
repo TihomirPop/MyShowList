@@ -15,11 +15,14 @@ public sealed interface UpdateShowCommand {
 
     Set<Genre> genres();
 
+    ThumbnailUrl thumbnailUrl();
+
     record UpdateMovie(
             ShowId showId,
             Title title,
             Description description,
             Set<Genre> genres,
+            ThumbnailUrl thumbnailUrl,
             LocalDate releaseDate
     ) implements UpdateShowCommand {
     }
@@ -29,6 +32,7 @@ public sealed interface UpdateShowCommand {
             Title title,
             Description description,
             Set<Genre> genres,
+            ThumbnailUrl thumbnailUrl,
             EpisodeCount episodeCount,
             DateRange airingPeriod
     ) implements UpdateShowCommand {

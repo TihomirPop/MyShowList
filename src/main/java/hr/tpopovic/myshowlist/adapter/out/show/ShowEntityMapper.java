@@ -24,6 +24,7 @@ public class ShowEntityMapper {
                 new Title(movieEntity.getTitle()),
                 new Description(movieEntity.getDescription()),
                 getGenres(movieEntity),
+                new ThumbnailUrl(movieEntity.getThumbnailUrl()),
                 movieEntity.getReleaseDate()
         );
     }
@@ -34,6 +35,7 @@ public class ShowEntityMapper {
                 new Title(tvSeriesEntity.getTitle()),
                 new Description(tvSeriesEntity.getDescription()),
                 getGenres(tvSeriesEntity),
+                new ThumbnailUrl(tvSeriesEntity.getThumbnailUrl()),
                 new EpisodeCount(tvSeriesEntity.getEpisodeCount()),
                 DateRange.from(tvSeriesEntity.getStartedDate()).to(tvSeriesEntity.getEndedDate())
         );

@@ -10,8 +10,8 @@ public final class UpdateMovieRequest extends UpdateShowRequest {
     public UpdateMovieRequest() {
     }
 
-    public UpdateMovieRequest(String id, String title, String description, Set<String> genres, LocalDate releaseDate) {
-        super(id, title, description, genres);
+    public UpdateMovieRequest(String id, String title, String description, Set<String> genres, String thumbnailUrl, LocalDate releaseDate) {
+        super(id, title, description, genres, thumbnailUrl);
         this.releaseDate = releaseDate;
     }
 

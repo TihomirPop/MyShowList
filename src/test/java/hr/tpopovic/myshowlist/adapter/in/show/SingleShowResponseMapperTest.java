@@ -22,6 +22,7 @@ class SingleShowResponseMapperTest {
                 new Title("Inception"),
                 new Description("A mind-bending thriller"),
                 Set.of(new Genre("Sci-Fi")),
+                new ThumbnailUrl("https://example.com/inception.png"),
                 LocalDate.of(2010, 7, 16)
         );
         AverageScore averageScore = new AverageScore(8.5);
@@ -42,6 +43,7 @@ class SingleShowResponseMapperTest {
         assertThat(movieDto.getDescription()).isEqualTo("A mind-bending thriller");
         assertThat(movieDto.getGenres()).containsExactly("Sci-Fi");
         assertThat(movieDto.getAverageScore()).isEqualTo(8.5);
+        assertThat(movieDto.getThumbnailUrl()).isEqualTo("https://example.com/inception.png");
         assertThat(movieDto.getReleaseDate()).isEqualTo(LocalDate.of(2010, 7, 16));
     }
 
