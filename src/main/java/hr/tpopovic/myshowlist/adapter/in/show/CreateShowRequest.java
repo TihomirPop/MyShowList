@@ -19,14 +19,16 @@ public abstract sealed class CreateShowRequest permits CreateMovieRequest, Creat
     private String title;
     private String description;
     private Set<String> genres;
+    private String thumbnailUrl;
 
     protected CreateShowRequest() {
     }
 
-    protected CreateShowRequest(String title, String description, Set<String> genres) {
+    protected CreateShowRequest(String title, String description, Set<String> genres, String thumbnailUrl) {
         this.title = title;
         this.description = description;
         this.genres = genres;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getTitle() {
@@ -51,6 +53,14 @@ public abstract sealed class CreateShowRequest permits CreateMovieRequest, Creat
 
     public void setGenres(Set<String> genres) {
         this.genres = genres;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
 }

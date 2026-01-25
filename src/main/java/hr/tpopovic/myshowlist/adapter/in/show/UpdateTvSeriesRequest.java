@@ -12,9 +12,9 @@ public final class UpdateTvSeriesRequest extends UpdateShowRequest {
     public UpdateTvSeriesRequest() {
     }
 
-    public UpdateTvSeriesRequest(String id, String title, String description, Set<String> genres,
+    public UpdateTvSeriesRequest(String id, String title, String description, Set<String> genres, String thumbnailUrl,
                                  Integer episodeCount, LocalDate startDate, LocalDate endDate) {
-        super(id, title, description, genres);
+        super(id, title, description, genres, thumbnailUrl);
         this.episodeCount = episodeCount;
         this.startDate = startDate;
         this.endDate = endDate;

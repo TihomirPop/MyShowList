@@ -98,10 +98,10 @@ public class ShowService implements FetchShows, FetchShow, CreateShow, UpdateSho
     private Show buildShowFromCreateCommand(CreateShowCommand command, Set<Genre> genres) {
         ShowId showId = new ShowId(UUID.randomUUID());
         return switch (command) {
-            case CreateShowCommand.CreateMovie(Title title, Description description, Set<Genre> _, LocalDate releaseDate) ->
-                    new Movie(showId, title, description, genres, releaseDate);
-            case CreateShowCommand.CreateTvSeries(Title title, Description description, Set<Genre> _, EpisodeCount episodeCount, DateRange airingPeriod) ->
-                    new TvSeries(showId, title, description, genres, episodeCount, airingPeriod);
+            case CreateShowCommand.CreateMovie(Title title, Description description, Set<Genre> _, ThumbnailUrl thumbnailUrl, LocalDate releaseDate) ->
+                    new Movie(showId, title, description, genres, thumbnailUrl, releaseDate);
+            case CreateShowCommand.CreateTvSeries(Title title, Description description, Set<Genre> _, ThumbnailUrl thumbnailUrl, EpisodeCount episodeCount, DateRange airingPeriod) ->
+                    new TvSeries(showId, title, description, genres, thumbnailUrl, episodeCount, airingPeriod);
         };
     }
 
@@ -133,10 +133,10 @@ public class ShowService implements FetchShows, FetchShow, CreateShow, UpdateSho
 
     private Show buildShowFromUpdateCommand(UpdateShowCommand command, Set<Genre> genres) {
         return switch (command) {
-            case UpdateShowCommand.UpdateMovie(ShowId showId, Title title, Description description, Set<Genre> _, LocalDate releaseDate) ->
-                    new Movie(showId, title, description, genres, releaseDate);
-            case UpdateShowCommand.UpdateTvSeries(ShowId showId, Title title, Description description, Set<Genre> _, EpisodeCount episodeCount, DateRange airingPeriod) ->
-                    new TvSeries(showId, title, description, genres, episodeCount, airingPeriod);
+            case UpdateShowCommand.UpdateMovie(ShowId showId, Title title, Description description, Set<Genre> _, ThumbnailUrl thumbnailUrl, LocalDate releaseDate) ->
+                    new Movie(showId, title, description, genres, thumbnailUrl, releaseDate);
+            case UpdateShowCommand.UpdateTvSeries(ShowId showId, Title title, Description description, Set<Genre> _, ThumbnailUrl thumbnailUrl, EpisodeCount episodeCount, DateRange airingPeriod) ->
+                    new TvSeries(showId, title, description, genres, thumbnailUrl, episodeCount, airingPeriod);
         };
     }
 

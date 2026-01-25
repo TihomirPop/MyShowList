@@ -40,6 +40,7 @@ class ShowServiceTest {
                 new Title("Inception"),
                 new Description("A mind-bending thriller"),
                 Set.of(new Genre("Sci-Fi")),
+                new ThumbnailUrl("https://example.com/inception.png"),
                 LocalDate.of(2010, 7, 16)
         );
         AverageScore averageScore = new AverageScore(8.5);

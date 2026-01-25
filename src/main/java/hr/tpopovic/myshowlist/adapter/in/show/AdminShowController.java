@@ -94,14 +94,15 @@ public class AdminShowController {
         Set<Genre> genres = request.getGenres().stream()
                 .map(Genre::new)
                 .collect(Collectors.toSet());
+        ThumbnailUrl thumbnailUrl = new ThumbnailUrl(request.getThumbnailUrl());
 
         return switch (request) {
             case CreateMovieRequest movieRequest ->
-                    new CreateShowCommand.CreateMovie(title, description, genres, movieRequest.getReleaseDate());
+                    new CreateShowCommand.CreateMovie(title, description, genres, thumbnailUrl, movieRequest.getReleaseDate());
             case CreateTvSeriesRequest tvSeriesRequest -> {
                 EpisodeCount episodeCount = new EpisodeCount(tvSeriesRequest.getEpisodeCount());
                 DateRange airingPeriod = DateRange.from(tvSeriesRequest.getStartDate()).to(tvSeriesRequest.getEndDate());
-                yield new CreateShowCommand.CreateTvSeries(title, description, genres, episodeCount, airingPeriod);
+                yield new CreateShowCommand.CreateTvSeries(title, description, genres, thumbnailUrl, episodeCount, airingPeriod);
             }
         };
     }
@@ -113,14 +114,15 @@ public class AdminShowController {
         Set<Genre> genres = request.getGenres().stream()
                 .map(Genre::new)
                 .collect(Collectors.toSet());
+        ThumbnailUrl thumbnailUrl = new ThumbnailUrl(request.getThumbnailUrl());
 
         return switch (request) {
             case UpdateMovieRequest movieRequest ->
-                    new UpdateShowCommand.UpdateMovie(showId, title, description, genres, movieRequest.getReleaseDate());
+                    new UpdateShowCommand.UpdateMovie(showId, title, description, genres, thumbnailUrl, movieRequest.getReleaseDate());
             case UpdateTvSeriesRequest tvSeriesRequest -> {
                 EpisodeCount episodeCount = new EpisodeCount(tvSeriesRequest.getEpisodeCount());
                 DateRange airingPeriod = DateRange.from(tvSeriesRequest.getStartDate()).to(tvSeriesRequest.getEndDate());
-                yield new UpdateShowCommand.UpdateTvSeries(showId, title, description, genres, episodeCount, airingPeriod);
+                yield new UpdateShowCommand.UpdateTvSeries(showId, title, description, genres, thumbnailUrl, episodeCount, airingPeriod);
             }
         };
     }

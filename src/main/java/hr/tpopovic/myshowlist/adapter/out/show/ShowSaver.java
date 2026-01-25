@@ -45,6 +45,7 @@ public class ShowSaver implements ForSavingShow {
                 entity.setTitle(movie.title().name());
                 entity.setDescription(movie.description().text());
                 entity.setGenres(genreEntities);
+                entity.setThumbnailUrl(movie.thumbnailUrl().url());
                 entity.setReleaseDate(movie.releaseDate());
                 yield entity;
             }
@@ -54,6 +55,7 @@ public class ShowSaver implements ForSavingShow {
                 entity.setTitle(tvSeries.title().name());
                 entity.setDescription(tvSeries.description().text());
                 entity.setGenres(genreEntities);
+                entity.setThumbnailUrl(tvSeries.thumbnailUrl().url());
                 entity.setEpisodeCount(tvSeries.episodeCount().count());
                 entity.setStartedDate(tvSeries.airingPeriod().from());
                 entity.setEndedDate(tvSeries.airingPeriod().to());
