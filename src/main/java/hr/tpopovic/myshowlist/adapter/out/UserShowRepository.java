@@ -12,7 +12,7 @@ public interface UserShowRepository extends JpaRepository<UserShowEntity, UserSh
     @Query("select u from UserShowEntity u join fetch u.show where u.id.userId = ?1")
     List<UserShowEntity> findByUserId(Integer userId);
 
-    @Query("select avg(u.score) from UserShowEntity u where u.id.showId = ?1 and u.score is not null")
+    @Query("select avg(u.score) from UserShowEntity u where u.id.showId = ?1 and u.score is not null and u.score > 0")
     Optional<Double> fetchAverageScore(UUID id);
 
 }

@@ -54,7 +54,7 @@ public class UserShowSaver implements ForSavingUserShow {
     private Short mapScore(Score score) {
         return switch (score) {
             case Score.Rated(Short value) -> value;
-            case Score.NotRated _ -> 0;
+            case Score.NotRated _ -> null;
         };
     }
 
