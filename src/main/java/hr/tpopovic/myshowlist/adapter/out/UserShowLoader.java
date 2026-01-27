@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 public class UserShowLoader implements ForLoadingUserShows {
 
     private static final Logger log = LoggerFactory.getLogger(UserShowLoader.class);
@@ -50,7 +52,7 @@ public class UserShowLoader implements ForLoadingUserShows {
     }
 
     private Score mapScore(Short score) {
-        return score == 0
+        return isNull(score) || score == 0
                 ? new Score.NotRated()
                 : new Score.Rated(score);
     }
