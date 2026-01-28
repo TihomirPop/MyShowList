@@ -15,6 +15,10 @@ service:
       path: ${service.api.root-path}/user-shows
     review:
       path: ${service.api.show.path}/{showId}/reviews
+    external-search:
+      path: ${service.api.root-path}/external-search
   jwt:
     base64-secret: ${JWT_SECRET}
     expiration: 1h
+  tmdb:
+    api-key: ${TMDB_API_KEY}
