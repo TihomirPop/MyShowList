@@ -29,6 +29,7 @@
     <properties>
         <java.version>25</java.version>
         <jwt.version>0.13.0</jwt.version>
+        <themoviedbapi.version>2.4.0</themoviedbapi.version>
     </properties>
     <dependencies>
         <dependency>
@@ -76,13 +77,17 @@
             <version>${jwt.version}</version>
             <scope>runtime</scope>
         </dependency>
-
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>uk.co.conoregan</groupId>
+            <artifactId>themoviedbapi</artifactId>
+            <version>${themoviedbapi.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa-test</artifactId>
