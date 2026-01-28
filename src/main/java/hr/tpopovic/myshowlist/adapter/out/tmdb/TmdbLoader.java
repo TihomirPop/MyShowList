@@ -116,7 +116,13 @@ public class TmdbLoader implements ForLoadingShowsFromExternalSource {
                         ? "https://image.tmdb.org/t/p/w500" + tmdbMovie.getPosterPath()
                         : "https://via.placeholder.com/500x750?text=No+Image"
         );
-        LocalDate firstAirDate = LocalDate.parse(tmdbMovie.getReleaseDate());
+
+        LocalDate firstAirDate;
+        try {
+            firstAirDate = LocalDate.parse(tmdbMovie.getReleaseDate());;
+        } catch (Exception e) {
+            firstAirDate = LocalDate.now();
+        }
 
         return new Movie(showId, title, description, genres, thumbnailUrl, firstAirDate);
     }
