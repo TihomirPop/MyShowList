@@ -1,6 +1,7 @@
 package hr.tpopovic.myshowlist.config;
 
 import hr.tpopovic.myshowlist.application.domain.service.AuthService;
+import hr.tpopovic.myshowlist.application.domain.service.ExternalSearchService;
 import hr.tpopovic.myshowlist.application.domain.service.ReviewService;
 import hr.tpopovic.myshowlist.application.domain.service.ShowService;
 import hr.tpopovic.myshowlist.application.domain.service.UserShowService;
@@ -8,6 +9,7 @@ import hr.tpopovic.myshowlist.application.port.in.CreateShow;
 import hr.tpopovic.myshowlist.application.port.in.DeleteShow;
 import hr.tpopovic.myshowlist.application.port.in.FetchShow;
 import hr.tpopovic.myshowlist.application.port.in.FetchShows;
+import hr.tpopovic.myshowlist.application.port.in.SearchExternalShows;
 import hr.tpopovic.myshowlist.application.port.in.UpdateShow;
 import hr.tpopovic.myshowlist.application.port.out.*;
 import org.springframework.context.annotation.Bean;
@@ -111,5 +113,19 @@ public class DomainConfig {
                 forDeletingReview,
                 forLoadingUsers
         );
+    }
+
+    @Bean
+    public ExternalSearchService externalSearchService(
+            ForLoadingShowsFromExternalSource forLoadingShowsFromExternalSource
+    ) {
+        return new ExternalSearchService(forLoadingShowsFromExternalSource);
+    }
+
+    @Bean
+    public SearchExternalShows searchExternalShows(
+            ExternalSearchService externalSearchService
+    ) {
+        return externalSearchService;
     }
 }
