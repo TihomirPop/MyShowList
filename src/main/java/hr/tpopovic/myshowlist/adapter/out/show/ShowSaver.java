@@ -57,8 +57,8 @@ public class ShowSaver implements ForSavingShow {
                 entity.setGenres(genreEntities);
                 entity.setThumbnailUrl(tvSeries.thumbnailUrl().url());
                 entity.setEpisodeCount(tvSeries.episodeCount().count());
-                entity.setStartedDate(tvSeries.airingPeriod().from());
-                entity.setEndedDate(tvSeries.airingPeriod().to());
+                entity.setStartedDate(tvSeries.airingPeriod().from().toNullable());
+                entity.setEndedDate(tvSeries.airingPeriod().to().toNullable());
                 yield entity;
             }
         };

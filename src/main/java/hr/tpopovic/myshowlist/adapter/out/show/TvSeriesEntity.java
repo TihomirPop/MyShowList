@@ -13,10 +13,10 @@ public class TvSeriesEntity extends ShowEntity {
     @Column(name = "episode_count", nullable = false)
     private Integer episodeCount;
 
-    @Column(name = "started_date", nullable = false)
+    @Column(name = "started_date", nullable = true)
     private LocalDate startedDate;
 
-    @Column(name = "ended_date", nullable = false)
+    @Column(name = "ended_date", nullable = true)
     private LocalDate endedDate;
 
     public Integer getEpisodeCount() {

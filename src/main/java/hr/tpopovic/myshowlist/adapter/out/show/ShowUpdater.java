@@ -68,8 +68,8 @@ public class ShowUpdater implements ForUpdatingShow {
             case Movie movie when entity instanceof MovieEntity movieEntity -> movieEntity.setReleaseDate(movie.releaseDate());
             case TvSeries tvSeries when entity instanceof TvSeriesEntity tvSeriesEntity -> {
                 tvSeriesEntity.setEpisodeCount(tvSeries.episodeCount().count());
-                tvSeriesEntity.setStartedDate(tvSeries.airingPeriod().from());
-                tvSeriesEntity.setEndedDate(tvSeries.airingPeriod().to());
+                tvSeriesEntity.setStartedDate(tvSeries.airingPeriod().from().toNullable());
+                tvSeriesEntity.setEndedDate(tvSeries.airingPeriod().to().toNullable());
             }
             default -> throw new IllegalStateException("Incompatible show and entity types");
         }

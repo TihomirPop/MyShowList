@@ -101,7 +101,9 @@ public class AdminShowController {
                     new CreateShowCommand.CreateMovie(title, description, genres, thumbnailUrl, movieRequest.getReleaseDate());
             case CreateTvSeriesRequest tvSeriesRequest -> {
                 EpisodeCount episodeCount = new EpisodeCount(tvSeriesRequest.getEpisodeCount());
-                DateRange airingPeriod = DateRange.from(tvSeriesRequest.getStartDate()).to(tvSeriesRequest.getEndDate());
+                ShowDate fromDate = ShowDate.ofNullable(tvSeriesRequest.getStartDate());
+                ShowDate toDate = ShowDate.ofNullable(tvSeriesRequest.getEndDate());
+                DateRange airingPeriod = DateRange.from(fromDate).to(toDate);
                 yield new CreateShowCommand.CreateTvSeries(title, description, genres, thumbnailUrl, episodeCount, airingPeriod);
             }
         };
@@ -121,7 +123,9 @@ public class AdminShowController {
                     new UpdateShowCommand.UpdateMovie(showId, title, description, genres, thumbnailUrl, movieRequest.getReleaseDate());
             case UpdateTvSeriesRequest tvSeriesRequest -> {
                 EpisodeCount episodeCount = new EpisodeCount(tvSeriesRequest.getEpisodeCount());
-                DateRange airingPeriod = DateRange.from(tvSeriesRequest.getStartDate()).to(tvSeriesRequest.getEndDate());
+                ShowDate fromDate = ShowDate.ofNullable(tvSeriesRequest.getStartDate());
+                ShowDate toDate = ShowDate.ofNullable(tvSeriesRequest.getEndDate());
+                DateRange airingPeriod = DateRange.from(fromDate).to(toDate);
                 yield new UpdateShowCommand.UpdateTvSeries(showId, title, description, genres, thumbnailUrl, episodeCount, airingPeriod);
             }
         };
