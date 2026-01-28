@@ -5,11 +5,14 @@ import hr.tpopovic.myshowlist.application.port.out.ForLoadingShowsFromExternalSo
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.TmdbGenre;
 import info.movito.themoviedbapi.TmdbSearch;
+import info.movito.themoviedbapi.TmdbTvSeries;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import info.movito.themoviedbapi.model.core.TvSeriesResultsPage;
+import info.movito.themoviedbapi.model.tv.series.TvSeriesDb;
 import info.movito.themoviedbapi.tools.TmdbException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -17,11 +20,13 @@ import java.util.stream.StreamSupport;
 public class TmdbLoader implements ForLoadingShowsFromExternalSource {
 
     private final TmdbSearch tmdbSearch;
+    private final TmdbTvSeries tmdbTvSeries;
     private final Map<Integer, String> showGenres;
     private final Map<Integer, String> movieGenres;
 
     public TmdbLoader(TmdbApi tmdbApi) throws TmdbException {
         this.tmdbSearch = tmdbApi.getSearch();
+        this.tmdbTvSeries = tmdbApi.getTvSeries();
         TmdbGenre tmdbGenre = tmdbApi.getGenre();
         this.showGenres = tmdbGenre.getTvList(null)
                 .stream()
@@ -82,7 +87,15 @@ public class TmdbLoader implements ForLoadingShowsFromExternalSource {
                 ? "https://image.tmdb.org/t/p/w500" + tmdbSeries.getPosterPath()
                 : "https://via.placeholder.com/500x750?text=No+Image"
         );
-        EpisodeCount episodeCount = new EpisodeCount(1);
+
+        TvSeriesDb details;
+        try {
+            details = tmdbTvSeries.getDetails(tmdbSeries.getId(), null);
+        } catch (TmdbException e) {
+            throw new RuntimeException("Failed to load TV series details from TMDB", e);
+        }
+
+        EpisodeCount episodeCount = new EpisodeCount(details.getNumberOfEpisodes());
 
         LocalDate firstAirDate;
         try {
@@ -91,8 +104,15 @@ public class TmdbLoader implements ForLoadingShowsFromExternalSource {
             firstAirDate = null;
         }
 
+        LocalDate lastAirDate;
+        try {
+            lastAirDate = LocalDate.parse(details.getLastAirDate());
+        } catch (Exception e) {
+            lastAirDate = null;
+        }
+
         ShowDate fromDate = ShowDate.ofNullable(firstAirDate);
-        ShowDate toDate = new ShowDate.Unknown();
+        ShowDate toDate = ShowDate.ofNullable(lastAirDate);
         DateRange airingPeriod = DateRange.from(fromDate).to(toDate);
 
         return new TvSeries(showId, title, description, genres, thumbnailUrl, episodeCount, airingPeriod);
