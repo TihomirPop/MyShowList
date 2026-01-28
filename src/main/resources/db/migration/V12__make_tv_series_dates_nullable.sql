@@ -1,0 +1,2 @@
+ALTER TABLE tv_series ALTER COLUMN started_date DROP NOT NULL;
+ALTER TABLE tv_series ALTER COLUMN ended_date DROP NOT NULL;

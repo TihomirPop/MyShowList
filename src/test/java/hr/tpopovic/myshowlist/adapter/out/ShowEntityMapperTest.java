@@ -85,9 +85,63 @@ class ShowEntityMapperTest {
                         new Description("A high school chemistry teacher turned methamphetamine producer."),
                         new ThumbnailUrl("https://example.com/breaking-bad.png"),
                         new EpisodeCount(62),
-                        DateRange.from(LocalDate.of(2008, 1, 20))
-                                .to(LocalDate.of(2013, 9, 29))
+                        DateRange.from(new ShowDate.Known(LocalDate.of(2008, 1, 20)))
+                                .to(new ShowDate.Known(LocalDate.of(2013, 9, 29)))
                 );
+    }
+
+    @Test
+    void should_map_tv_series_entity_with_null_dates_to_unknown() {
+        // given
+        var tvSeriesEntity = new TvSeriesEntity();
+        UUID id = UUID.randomUUID();
+        tvSeriesEntity.setId(id);
+        tvSeriesEntity.setTitle("Upcoming Series");
+        tvSeriesEntity.setDescription("A series with unknown dates");
+        tvSeriesEntity.setGenres(Set.of());
+        tvSeriesEntity.setThumbnailUrl("https://example.com/upcoming.png");
+        tvSeriesEntity.setEpisodeCount(10);
+        tvSeriesEntity.setStartedDate(null);
+        tvSeriesEntity.setEndedDate(null);
+
+        // when
+        Show show = ShowEntityMapper.toDomain(tvSeriesEntity);
+
+        // then
+        assertThat(show)
+                .isNotNull()
+                .asInstanceOf(type(TvSeries.class))
+                .satisfies(series -> {
+                    assertThat(series.airingPeriod().from()).isInstanceOf(ShowDate.Unknown.class);
+                    assertThat(series.airingPeriod().to()).isInstanceOf(ShowDate.Unknown.class);
+                });
+    }
+
+    @Test
+    void should_map_tv_series_entity_with_mixed_dates() {
+        // given
+        var tvSeriesEntity = new TvSeriesEntity();
+        UUID id = UUID.randomUUID();
+        tvSeriesEntity.setId(id);
+        tvSeriesEntity.setTitle("Ongoing Series");
+        tvSeriesEntity.setDescription("A series with known start but unknown end");
+        tvSeriesEntity.setGenres(Set.of());
+        tvSeriesEntity.setThumbnailUrl("https://example.com/ongoing.png");
+        tvSeriesEntity.setEpisodeCount(50);
+        tvSeriesEntity.setStartedDate(LocalDate.of(2020, 1, 1));
+        tvSeriesEntity.setEndedDate(null);
+
+        // when
+        Show show = ShowEntityMapper.toDomain(tvSeriesEntity);
+
+        // then
+        assertThat(show)
+                .isNotNull()
+                .asInstanceOf(type(TvSeries.class))
+                .satisfies(series -> {
+                    assertThat(series.airingPeriod().from()).isEqualTo(new ShowDate.Known(LocalDate.of(2020, 1, 1)));
+                    assertThat(series.airingPeriod().to()).isInstanceOf(ShowDate.Unknown.class);
+                });
     }
 
 }

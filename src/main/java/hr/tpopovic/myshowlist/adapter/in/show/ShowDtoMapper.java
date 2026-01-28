@@ -2,6 +2,7 @@ package hr.tpopovic.myshowlist.adapter.in.show;
 
 import hr.tpopovic.myshowlist.application.domain.model.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,9 @@ public class ShowDtoMapper {
     }
 
     private static ShowDto tvSeries(TvSeries tvSeries, AverageScore averageScore) {
+        LocalDate startDate = tvSeries.airingPeriod().from().toNullable();
+        LocalDate endDate = tvSeries.airingPeriod().to().toNullable();
+
         return new TvSeriesDto(
                 tvSeries.id().id().toString(),
                 tvSeries.title().name(),
@@ -39,8 +43,8 @@ public class ShowDtoMapper {
                 averageScore.score(),
                 tvSeries.thumbnailUrl().url(),
                 tvSeries.episodeCount().count(),
-                tvSeries.airingPeriod().from(),
-                tvSeries.airingPeriod().to()
+                startDate,
+                endDate
         );
     }
 

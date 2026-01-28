@@ -30,6 +30,10 @@ public class ShowEntityMapper {
     }
 
     private static TvSeries tvSeriesEntity(TvSeriesEntity tvSeriesEntity) {
+        ShowDate fromDate = ShowDate.ofNullable(tvSeriesEntity.getStartedDate());
+        ShowDate toDate = ShowDate.ofNullable(tvSeriesEntity.getEndedDate());
+        DateRange airingPeriod = DateRange.from(fromDate).to(toDate);
+
         return new TvSeries(
                 new ShowId(tvSeriesEntity.getId()),
                 new Title(tvSeriesEntity.getTitle()),
@@ -37,7 +41,7 @@ public class ShowEntityMapper {
                 getGenres(tvSeriesEntity),
                 new ThumbnailUrl(tvSeriesEntity.getThumbnailUrl()),
                 new EpisodeCount(tvSeriesEntity.getEpisodeCount()),
-                DateRange.from(tvSeriesEntity.getStartedDate()).to(tvSeriesEntity.getEndedDate())
+                airingPeriod
         );
     }
 
