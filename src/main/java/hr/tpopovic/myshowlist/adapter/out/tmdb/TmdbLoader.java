@@ -52,6 +52,7 @@ public class TmdbLoader implements ForLoadingShowsFromExternalSource {
         }
 
         return StreamSupport.stream(page.spliterator(), false)
+                .limit(5)
                 .map(this::mapToTvSeries)
                 .toList();
     }
@@ -65,6 +66,7 @@ public class TmdbLoader implements ForLoadingShowsFromExternalSource {
             return Collections.emptyList();
         }
         return StreamSupport.stream(page.spliterator(), false)
+                .limit(5)
                 .map(this::mapToMovie)
                 .toList();
     }
@@ -95,7 +97,12 @@ public class TmdbLoader implements ForLoadingShowsFromExternalSource {
             throw new RuntimeException("Failed to load TV series details from TMDB", e);
         }
 
-        EpisodeCount episodeCount = new EpisodeCount(details.getNumberOfEpisodes());
+        Integer numberOfEpisodes = details.getNumberOfEpisodes();
+        EpisodeCount episodeCount = new EpisodeCount(
+                numberOfEpisodes != null && numberOfEpisodes > 0
+                        ? numberOfEpisodes
+                        : 1
+        );
 
         LocalDate firstAirDate;
         try {
