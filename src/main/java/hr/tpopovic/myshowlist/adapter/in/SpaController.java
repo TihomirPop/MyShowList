@@ -16,7 +16,8 @@ public class SpaController {
 
     @GetMapping(value = {
             "/",
-            "/{path:[^.]*}"  // Match any path without a file extension
+            "/{path:[^.]*}",
+            "/**/{path:[^.]*}"
     })
     public String forward() {
         return "forward:/index.html";
